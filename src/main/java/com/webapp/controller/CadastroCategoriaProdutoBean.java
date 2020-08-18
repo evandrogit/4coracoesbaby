@@ -242,7 +242,7 @@ public class CadastroCategoriaProdutoBean implements Serializable {
 	
 	public void buscar() {
 		categoriaProduto = categoriasProdutos.porId(categoriaProduto.getId());
-		filter.setEmpresa("Decore");
+		filter.setEmpresa("EMPRESA");
 		filter.setCategoriaProduto(categoriaProduto);
 		produtosFiltrados = produtos.filtrados(filter);
 		
