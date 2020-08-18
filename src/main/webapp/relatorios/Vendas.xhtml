@@ -1,0 +1,1044 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Total de Vendas</ui:define>
+
+	<ui:define name="head">
+
+		<script type="text/javascript">
+			function percentExtender2() {
+
+				var options = $.extend(true, {}, this.cfg.config);
+
+				this.cfg.config.options = {
+					legend : {
+						display : true,
+					},
+
+					scales : {
+						xAxes : [ {
+							display : true,
+						} ]
+					},
+
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								if (tooltipItem.datasetIndex == 1
+										|| tooltipItem.datasetIndex == 0) {
+									var valor = "R$ " + numberToReal(amount);
+									if (valor.includes("-.")) {
+										valor = valor.replace("-.", "-");
+									}
+									return valor;
+								} else {
+									return numberToReal(amount) + "%";
+								}
+							}
+						}
+					},
+				};
+
+				$.extend(true, this.cfg.config, options);
+			}
+			/*
+			function percentExtender2() {
+				var tickColor = "#666";
+				var gridlineColor = "rgba(0,0,0,0.1)";
+
+				this.cfg.config.options = {
+					legend : {
+						display : true,
+					},
+
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								return numberToReal(amount);
+							}
+						}
+					},
+				};
+			}*/
+
+			function percentExtender3() {
+
+				this.cfg.config.options = {
+					legend : {
+						display : false,
+					},
+
+					title : {
+						display : true,
+						text : 'Produtos vs Quantidade'
+					},
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								var total = eval(data.datasets[tooltipItem.datasetIndex].data
+										.join("+"));
+
+								var label = tooltipItem.yLabel;
+
+								return "QTY: "
+										+ amount;
+							}
+						}
+					},
+				};
+			}
+
+			function percentExtender4() {
+				var tickColor = "#666";
+				var gridlineColor = "rgba(0,0,0,0.1)";
+
+				this.cfg.config.options = {
+					legend : {
+						display : true,
+					},
+
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								return numberToReal(amount);
+							}
+						}
+					},
+				};
+			}
+
+			function numberToReal(numero) {
+				var numero = numero.toFixed(2).split('.');
+				numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+				return numero.join(',');
+			}
+		</script>
+
+		<style>
+@media ( min-width :220px) {
+	#produtos-qty .ui-grid-responsive .ui-grid-row {
+	    display: flex;
+	}
+	#produtos-qty .ui-datatable table {
+	    border-collapse: separate;
+	    width: auto;
+	}
+	body .ui-datatable .ui-datatable-data>tr td {
+	    padding: 0px 10px;
+	    font-size: 12px;
+	    color: #525252;
+	}
+	.grid-dia {
+		margin-bottom: 4px;
+	}
+	.vendas-top5 tr td:nth-child(2n-1) {
+		border-bottom: 1.3px solid rebeccapurple;
+	}
+	.vendas-top5 tr td:nth-child(2) {
+		border-bottom: 1px solid #0e71dc;
+	}
+	#produtos-qty .ui-panelgrid .ui-panelgrid-cell:nth-child(2n) {
+		text-align: end;
+	}
+	#target-dialog .ui-inputtext {
+		text-align: center;
+	}
+	.target {
+		margin-top: 35px;
+	}
+	.target a {
+		color: #ababab;
+		text-decoration: none;
+		font-weight: bold;
+		font-size: 12px;
+	}
+	.swal2-popup {
+		width: 28em;
+		max-width: 100%;
+		padding: 0 0 0.4em 0;
+		font-size: 0.75rem;
+	}
+	.swal2-popup #swal2-content {
+		font-weight: 400;
+	}
+	.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+		/*border: 1px solid #e8e8e8;*/
+		white-space: normal;
+	}
+	body .ui-selectonemenu-panel {
+		width: 72%;
+	}
+	.ui-fluid .ui-selectcheckboxmenu {
+		height: 29px;
+	}
+	.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+		width: 100%;
+	}
+	body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox
+		{
+		/*display: none;*/
+		
+	}
+	body .ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
+		right: 0;
+		height: 32px;
+		top: -2px;
+	}
+	.dateStop {
+		margin-left: 0px;
+	}
+	.barChart-01 {
+		width: 100%;
+		height: 150px;
+		margin-top: 17px;
+		margin-bottom: 20px;
+	}
+	.barChart-02 {
+		width: 100%;
+		height: 150px;
+		margin-top: 17px;
+		margin-bottom: 20px;
+	}
+	.barChart-02 {
+		width: 100%;
+		height: 150px;
+		margin-top: 15px;
+	}
+	.ano {
+		width: 100%;
+	}
+	.btn-pie.ui-button {
+		color: #6a6565;
+		background-color: #f2f2f200;
+		border: 1px solid #a8a8a8;
+		width: 32px;
+		float: right;
+		position: relative;
+		margin-right: 10px;
+	}
+	.btn-pie.ui-button.ui-state-hover {
+		background-color: #e8e5e5;
+	}
+	.btn-pie.ui-button.ui-state-focus {
+		background-color: #e8e5e5;
+	}
+	.btn-pie.ui-button.ui-state-active {
+		background-color: #f2f2f200;
+	}
+	.no-display.ui-panelgrid .ui-panelgrid-cell:nth-child(3) {
+		padding: 0;
+	}
+	body .ui-datatable .ui-datatable-scrollable-header {
+	    display: none;
+	}
+	.header-produto .ui-grid-responsive {
+	    background-color: #f9f9f9;
+	}
+	body .ui-datatable .ui-datatable-data>tr.ui-datatable-even {
+	    background-color: transparent;
+	    border-bottom: 1px solid #afc7ff;
+	}
+	body .ui-datatable .ui-datatable-data>tr {
+	    border-color: transparent;
+	    background-color: #f1f1f1;
+	}
+	body .ui-datatable .ui-datatable-data>tr td {
+	    padding: 0px 10px;
+	}
+	.grid-ano {
+		margin-bottom: 4px;
+	}
+}
+
+@media ( min-width :460px) {
+	.target-dia {
+		margin-top: 7px !important;
+	}
+	.target-ano {
+		margin-top: 7px !important;
+	}
+	.grid-dia {
+		margin-bottom: 40px;
+	}
+	.grid-ano {
+		margin-bottom: 40px;
+	}
+	.target {
+		margin-top: 0px;
+	}
+	body .ui-selectonemenu-panel {
+		width: auto;
+	}
+	.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+		width: 90px;
+	}
+	body .ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
+		right: 113px;
+		height: 32px;
+		top: -2px;
+	}
+	.dateStop {
+		margin-left: 20px;
+	}
+	.categoria {
+		width: 84%;
+	}
+	.barChart-01 {
+		width: 100%;
+		height: 270px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	.barChart-02 {
+		width: 100%;
+		height: 270px;
+		margin-top: 10px;
+		margin-bottom: 0px;
+	}
+	.ano {
+		width: 78% !important;
+	}
+	.btn-pie.ui-button {
+		float: left;
+		position: relative;
+		margin-left: -8px;
+		height: 29px;
+		margin-top: 4px;
+	}
+	body .ui-datatable .ui-datatable-data>tr td {
+	    font-size: 14px !important;
+	    font-family: "Source Sans Pro", "Helvetica Neue", sans-serif !important;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="page-header">
+			<h1>Total de Vendas</h1>
+		</div>
+
+		<h:form id="form">
+
+			<p:growl id="msg" closable="true" life="2000" showSummary="false"
+				showDetail="true" style="text-align: center" />
+
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="panelgrid-noborder disabled disabled"
+				columnClasses="ui-grid-col-6, ui-grid-col-6">
+
+				<p:panel class="ui-lg-6 ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Vendas por
+						Dia</h3>
+
+					<p:panelGrid columns="4" id="painel" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1">
+
+						<p:outputLabel value="Data da venda" for="data01" />
+						<p:datePicker id="data01" value="#{relatorioVendasBean.dateStart}"
+							readonlyInput="true" pattern="dd/MM/yyyy" locale="pt"
+							showIcon="true">
+
+							<p:ajax event="dateSelect"
+								listener="#{relatorioVendasBean.createMixedModelPorDia}"
+								process="@this painel painel-categoria" update="barChart-vendasPorDia" />
+						</p:datePicker>
+
+
+						<p:outputLabel value="até" id="data02" />
+						<p:datePicker id="data-02" value="#{relatorioVendasBean.dateStop}"
+							readonlyInput="true" styleClass="dateStop" pattern="dd/MM/yyyy"
+							locale="pt" showIcon="true">
+
+							<p:ajax event="dateSelect"
+								listener="#{relatorioVendasBean.createMixedModelPorDia}"
+								process="@this painel painel-categoria" update="barChart-vendasPorDia" />
+						</p:datePicker>
+
+						<p:outputLabel value="Vendedor" for="vendedor1" />
+						<p:selectOneMenu id="vendedor1"
+							value="#{relatorioVendasBean.usuarioPorDia}"
+							placeholder="selecione">
+
+							<f:selectItem itemLabel="Selecione" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeVendedorPorDia}"
+								process="@this painel painel-categoria" update="produto1 barChart-vendasPorDia" />
+
+							<f:selectItems value="#{relatorioVendasBean.todosVendedores}"
+								var="vendedor" itemLabel="#{vendedor.nome}"
+								itemValue="#{vendedor}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="3" layout="grid" id="painel-categoria"
+						styleClass="panelgrid-noborder disabled disabled no-display"
+						columnClasses="ui-grid-col-3, ui-grid-col-5, ui-grid-col-4">
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu styleClass="categoria" label=""
+							showHeader="true" emptyLabel="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioVendasBean.categoriasPorDia}">
+
+							<f:selectItems
+								value="#{relatorioVendasBean.todasCategoriasProduto}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioVendasBean.changeCategoriaPorDia}"
+							process="@this painel painel-categoria" styleClass="btn-pie"
+							title="Atualizar" onstart="start();" oncomplete="stop();"
+							update="produto1 barChart-vendasPorDia" />
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="3" layout="grid" style="margin-top: -4px;"
+						styleClass="panelgrid-noborder disabled disabled grid-dia"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Produto" for="produto1" />
+						<p:selectOneMenu id="produto1" style="width: 100%"
+							value="#{relatorioVendasBean.produto01}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeProdutoPorDia}"
+								process="@this" update="barChart-vendasPorDia" />
+							<f:selectItems value="#{relatorioVendasBean.produtosPorDia}"
+								var="produto"
+								itemLabel="#{produto.codigo.concat(' | ').concat(produto.descricao)}"
+								itemValue="#{produto}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:commandButton rendered="true" icon="fa fa-pie-chart"
+						actionListener="#{relatorioVendasBean.prepareDonutModelPorDia}"
+						styleClass="btn-pie" title="Produtos por Quantidade" onstart="start();"
+						oncomplete="PF('produtos-qty').show();stop();"
+						update="form-dialog"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 32px;margin-right:10px" />
+
+					<p:barChart id="barChart-vendasPorDia"
+						model="#{relatorioVendasBean.mixedModelPorDia}"
+						styleClass="barChart-01" />
+
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target target-dia"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioVendasBean.definirTargetDiario}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel class="ui-lg-6  ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Vendas por
+						Semana</h3>
+
+					<p:panelGrid columns="2" layout="grid" id="panel-ano01"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Ano" for="ano" />
+						<p:selectOneMenu id="ano" styleClass="ano"
+							value="#{relatorioVendasBean.ano01}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorSemana}"
+								process="@this panel-semanal panel-semanal-categoria" update="barChart-vendasPorSemana" />
+							<f:selectItems value="#{relatorioVendasBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid id="panel-semanal" columns="4" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1, ui-grid-col-4">
+
+						<p:outputLabel value="Nª Semana" for="num-semana1" />
+						<p:selectOneMenu id="num-semana1" style="width: 100%"
+							value="#{relatorioVendasBean.semana01}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorSemana}"
+								process="@this panel-ano01  panel-semanal panel-semanal-categoria" update="barChart-vendasPorSemana" />
+							<f:selectItems value="#{relatorioVendasBean.semanas}"
+								var="semana" itemLabel="#{semana}" itemValue="#{semana}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Até" for="num-semana2" />
+						<p:selectOneMenu id="num-semana2" style="width: 100%"
+							value="#{relatorioVendasBean.semana02}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorSemana}"
+								process="@this panel-ano01  panel-semanal panel-semanal-categoria" update="barChart-vendasPorSemana" />
+							<f:selectItems value="#{relatorioVendasBean.semanas}"
+								var="semana" itemLabel="#{semana}" itemValue="#{semana}"></f:selectItems>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Vendedor" for="vendedor2" />
+						<p:selectOneMenu id="vendedor2"
+							value="#{relatorioVendasBean.usuarioPorSemana}"
+							placeholder="selecione">
+
+							<f:selectItem itemLabel="Selecione" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeVendedorPorSemana}"
+								process="@this panel-ano01  panel-semanal panel-semanal-categoria" update="produto2 barChart-vendasPorSemana" />
+
+							<f:selectItems value="#{relatorioVendasBean.todosVendedores}"
+								var="vendedor" itemLabel="#{vendedor.nome}"
+								itemValue="#{vendedor}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="3" layout="grid" id="panel-semanal-categoria"
+						styleClass="panelgrid-noborder disabled disabled no-display"
+						columnClasses="ui-grid-col-3, ui-grid-col-5, ui-grid-col-4">
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu style="width: 100%" label=""
+							showHeader="true" emptyLabel="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioVendasBean.categoriasPorSemana}">
+
+							<f:selectItems
+								value="#{relatorioVendasBean.todasCategoriasProduto}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioVendasBean.changeCategoriaPorSemana}"
+							process="@this panel-ano01  panel-semanal panel-semanal-categoria"
+							styleClass="btn-pie" title="Atualizar" onstart="start();"
+							oncomplete="stop();" update="produto2 barChart-vendasPorSemana" />
+					</p:panelGrid>
+
+					<p:panelGrid columns="2" layout="grid" style="margin-top: -4px;"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Produto" for="produto2" />
+						<p:selectOneMenu id="produto2" style="width: 100%"
+							value="#{relatorioVendasBean.produto02}">
+
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeProdutoPorSemana}"
+								process="@this" update="barChart-vendasPorSemana" />
+							<f:selectItems value="#{relatorioVendasBean.produtosPorSemana}"
+								var="produto"
+								itemLabel="#{produto.codigo.concat(' | ').concat(produto.descricao)}"
+								itemValue="#{produto}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:commandButton rendered="true" icon="fa fa-pie-chart"
+						actionListener="#{relatorioVendasBean.prepareDonutModelPorSemana}"
+						title="Produtos por Quantidade" onstart="start();"
+						oncomplete="PF('produtos-qty').show();stop();"
+						update="form-dialog"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 32px;margin-top:5px;margin-right:10px" />
+
+					<p:barChart id="barChart-vendasPorSemana"
+						model="#{relatorioVendasBean.mixedModelPorSemana}"
+						styleClass="barChart-02" />
+
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioVendasBean.definirTargetSemanal}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+			</p:panelGrid>
+
+
+
+
+			<p:panelGrid columns="2" layout="grid"
+				style="margin-top:10px;margin-bottom:20px"
+				styleClass="panelgrid-noborder disabled disabled"
+				columnClasses="ui-grid-col-6, ui-grid-col-6">
+
+				<p:panel class="ui-lg-6 ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Vendas por
+						Mês</h3>
+
+					<p:panelGrid columns="2" layout="grid" id="panel-ano02"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Ano" for="ano2" />
+						<p:selectOneMenu id="ano2" styleClass="ano"
+							value="#{relatorioVendasBean.ano02}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorMes}"
+								process="@this panel-mensal panel-mensal-categoria" update="barChart-vendasPorMes" />
+							<f:selectItems value="#{relatorioVendasBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="4" id="panel-mensal" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1,ui-grid-col-4">
+
+						<p:outputLabel value="Nº Mês" for="mes1" />
+						<p:selectOneMenu id="mes1" style="width: 100%"
+							value="#{relatorioVendasBean.mes01}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorMes}"
+								process="@this panel-ano02 panel-mensal panel-mensal-categoria" update="barChart-vendasPorMes" />
+							<f:selectItems value="#{relatorioVendasBean.meses}" var="mes"
+								itemLabel="#{mes}" itemValue="#{mes}"></f:selectItems>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="até" for="mes2" />
+						<p:selectOneMenu id="mes2" style="width: 100%"
+							value="#{relatorioVendasBean.mes02}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorMes}"
+								process="@this panel-ano02 panel-mensal panel-mensal-categoria" update="barChart-vendasPorMes" />
+							<f:selectItems value="#{relatorioVendasBean.meses}" var="mes"
+								itemLabel="#{mes}" itemValue="#{mes}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Vendedor" for="vendedor3" />
+						<p:selectOneMenu id="vendedor3"
+							value="#{relatorioVendasBean.usuarioPorMes}"
+							placeholder="selecione">
+
+							<f:selectItem itemLabel="Selecione" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeVendedorPorMes}"
+								process="@this panel-ano02 panel-mensal panel-mensal-categoria" update="produto3 barChart-vendasPorMes" />
+
+							<f:selectItems value="#{relatorioVendasBean.todosVendedores}"
+								var="vendedor" itemLabel="#{vendedor.nome}"
+								itemValue="#{vendedor}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+
+					<p:panelGrid columns="3" layout="grid" id="panel-mensal-categoria"
+						styleClass="panelgrid-noborder disabled disabled no-display"
+						columnClasses="ui-grid-col-3, ui-grid-col-5, ui-grid-col-4">
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu style="width: 100%" label=""
+							showHeader="true" emptyLabel="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioVendasBean.categoriasPorMes}">
+
+							<f:selectItems
+								value="#{relatorioVendasBean.todasCategoriasProduto}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioVendasBean.changeCategoriaPorMes}"
+							process="@this panel-ano02 panel-mensal panel-mensal-categoria"
+							styleClass="btn-pie" title="Atualizar" onstart="start();"
+							oncomplete="stop();" update="produto3 barChart-vendasPorMes" />
+					</p:panelGrid>
+
+					<p:panelGrid columns="2" layout="grid" style="margin-top: -4px;"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Produto" for="produto3" />
+						<p:selectOneMenu id="produto3" style="width: 100%"
+							value="#{relatorioVendasBean.produto03}">
+
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeProdutoPorMes}"
+								process="@this" update="barChart-vendasPorMes" />
+							<f:selectItems value="#{relatorioVendasBean.produtosPorMes}"
+								var="produto"
+								itemLabel="#{produto.codigo.concat(' | ').concat(produto.descricao)}"
+								itemValue="#{produto}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:commandButton rendered="true" icon="fa fa-pie-chart"
+						actionListener="#{relatorioVendasBean.prepareDonutModelPorMes}"
+						title="Produtos por Quantidade" onstart="start();"
+						oncomplete="PF('produtos-qty').show();stop();"
+						update="form-dialog"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 32px;margin-top:5px;margin-right:10px" />
+
+					<p:barChart model="#{relatorioVendasBean.mixedModelPorMes}"
+						id="barChart-vendasPorMes" styleClass="barChart-02" />
+
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioVendasBean.definirTargetMensal}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel class="ui-lg-6  ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Vendas por
+						Ano</h3>
+
+					<p:panelGrid columns="4" id="panel-anual" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1, ui-grid-col-4">
+
+						<p:outputLabel value="Ano" for="ano3" />
+						<p:selectOneMenu id="ano3" style="width: 100%"
+							value="#{relatorioVendasBean.ano03}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorAno}"
+								process="@this panel-anual panel-anual-categoria" update="barChart-vendasPorAno" />
+							<f:selectItems value="#{relatorioVendasBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Até" for="ano4" />
+						<p:selectOneMenu id="ano4" style="width: 100%"
+							value="#{relatorioVendasBean.ano04}">
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.createMixedModelPorAno}"
+								process="@this panel-anual panel-anual-categoria" update="barChart-vendasPorAno" />
+							<f:selectItems value="#{relatorioVendasBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Vendedor" for="vendedor4" />
+						<p:selectOneMenu id="vendedor4"
+							value="#{relatorioVendasBean.usuarioPorAno}"
+							placeholder="selecione">
+
+							<f:selectItem itemLabel="Selecione" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeVendedorPorAno}"
+								process="@this panel-anual panel-anual-categoria" update="produto4 barChart-vendasPorAno" />
+
+							<f:selectItems value="#{relatorioVendasBean.todosVendedores}"
+								var="vendedor" itemLabel="#{vendedor.nome}"
+								itemValue="#{vendedor}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="3" layout="grid" id="panel-anual-categoria"
+						styleClass="panelgrid-noborder disabled disabled no-display"
+						columnClasses="ui-grid-col-3, ui-grid-col-5, ui-grid-col-4">
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu style="width: 100%" label=""
+							showHeader="true" emptyLabel="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioVendasBean.categoriasPorAno}">
+
+							<f:selectItems
+								value="#{relatorioVendasBean.todasCategoriasProduto}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioVendasBean.changeCategoriaPorAno}"
+							process="@this panel-anual panel-anual-categoria"
+							styleClass="btn-pie" title="Atualizar" onstart="start();"
+							oncomplete="stop();" update="produto4 barChart-vendasPorAno" />
+					</p:panelGrid>
+
+					<p:panelGrid columns="2" layout="grid" style="margin-top: -4px;"
+						styleClass="panelgrid-noborder disabled disabled grid-ano"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Produto" for="produto4" />
+						<p:selectOneMenu id="produto4" style="width: 100%"
+							value="#{relatorioVendasBean.produto04}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+
+							<p:ajax event="change"
+								listener="#{relatorioVendasBean.changeProdutoPorAno}"
+								process="@this" update="barChart-vendasPorAno" />
+							<f:selectItems value="#{relatorioVendasBean.produtosPorAno}"
+								var="produto"
+								itemLabel="#{produto.codigo.concat(' | ').concat(produto.descricao)}"
+								itemValue="#{produto}"></f:selectItems>
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+					<p:commandButton rendered="true" icon="fa fa-pie-chart"
+						actionListener="#{relatorioVendasBean.prepareDonutModelPorAno}"
+						styleClass="btn-pie" title="Produtos por Quantidade" onstart="start();"
+						oncomplete="PF('produtos-qty').show();stop();"
+						update="form-dialog"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 32px;margin-right:10px" />
+
+					<p:barChart id="barChart-vendasPorAno"
+						model="#{relatorioVendasBean.mixedModelPorAno}"
+						styleClass="barChart-01" />
+
+					<p:panelGrid columns="1" layout="grid" style="text-align: center;"
+						styleClass="panelgrid-noborder disabled disabled target target-ano"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioVendasBean.definirTargetAnual}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+			</p:panelGrid>
+
+		</h:form>
+		
+		<p:dialog header="Produtos vs Quantidade"
+			widgetVar="produtos-qty" id="produtos-qty"
+			resizable="false" modal="true" position="top"
+			style="margin-top: 100px" closeOnEscape="true" responsive="true"
+			width="350px">
+
+			<h:form id="form-dialog" style="margin-top: 10px;">
+
+				<div class="ui-fluid">
+
+					<div class="card card-w-title ui-fluid"
+						style="padding: 0px 5px 0px 5px; padding-bottom: 0px !important; margin-bottom: 10px;">
+						
+						<p:donutChart id="pieChart-vendasPorQuantidade"
+							model="#{relatorioVendasBean.donutModel}"
+							style="width: 100%; height: 180px; margin-top: -8px" />
+
+						<p:panelGrid columns="2" layout="grid" style="margin-top: 15px"
+							styleClass="panelgrid-noborder disabled disabled"
+							columnClasses="ui-grid-col-7, ui-grid-col-5">
+
+							<p:outputLabel style="font-weight: bold"
+								value="Valor total de vendas: " />
+							<p:outputLabel
+								value="R$ #{relatorioVendasBean.totalValorVenda}"
+								style="color: #0db130;font-weight: bold;font-size: 14px;">
+								<f:convertNumber type="currency" />
+							</p:outputLabel>
+
+							<p:outputLabel style="font-weight: bold" value="Total de itens: " />
+							<p:outputLabel
+								value="#{relatorioVendasBean.totalItensVenda}"
+								style="font-weight: bold;font-size: 14px;">
+							</p:outputLabel>
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" layout="grid"
+							style="text-align:center;"
+							styleClass="panelgrid-noborder disabled disabled header-produto"
+							columnClasses="ui-grid-col-12">
+
+							<p:outputLabel style="font-weight: bold" value="Produtos " />
+						</p:panelGrid>
+
+						<p:dataTable id="fluxoTable6" 
+							value="#{relatorioVendasBean.detalhesVendasPorProduto}" var="produto"
+							scrollable="true" scrollHeight="190" styleClass="vendas-top5">
+
+							<p:column headerText="Descrição" style="text-align:left;width:65%">
+								<p:commandLink value="#{produto.item}" process="@this"
+									update="produto-dialog" style="color: #023961;"
+									actionListener="#{relatorioVendasBean.carregarProduto(produto.codigo)}"
+									onstart="start();"
+									oncomplete="PF('produto-dialog').show();stop();" />
+							</p:column>
+
+							<p:column headerText="Valor" style="text-align:right;width:30%">
+								<h:outputText value="#{produto.value}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Qty"
+								style="text-align:right;width:20%">
+								<h:outputText value="#{produto.quantidade}">
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:commandButton icon="fa fa-fw fa-close"
+							style="margin-top: 15px; margin-bottom: 2px;float:right;font-weight: bold;width: 120px;background: #fd6161;color: #ffffff;"
+							value="Fechar" onstart="start();"
+							oncomplete="stop();PF('produtos-qty').hide();">
+						</p:commandButton>
+
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Definir target" widgetVar="target-dialog"
+			position="top" style="margin-top: 100px" id="target-dialog"
+			resizable="false" modal="true" closeOnEscape="true" responsive="true">
+
+			<h:form id="form-target">
+
+				<div class="ui-fluid" style="margin-top: 10px; text-align: center">
+
+					<p:panelGrid columns="1" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-12">
+
+						<p:outputLabel value="#{relatorioVendasBean.targetMsg}"
+							for="target" style="font-weight: bold" />
+						<p:inputNumber id="target" decimalPlaces="2" autocomplete="off"
+							symbol="R$ " value="#{relatorioVendasBean.target}"
+							required="true" requiredMessage="Target deve ser informado." />
+					</p:panelGrid>
+
+					<div
+						style="width: 80%; margin: auto; border-top: 1px solid #ccc; margin-top: 10px; margin-bottom: 10px"></div>
+
+					<p:commandButton widgetVar="btn-confirmar" id="btn-confirmar"
+						action="#{relatorioVendasBean.confirmarTarget}"
+						icon="fa fa-fw fa-check" process="@this form-target"
+						onstart="PF('downloadLoading').show(); PF('btn-confirmar').disable();"
+						onsuccess="PF('downloadLoading').hide(); PF('btn-confirmar').enable();"
+						oncomplete="if (!args.validationFailed) PF('target-dialog').hide();"
+						style="margin-bottom: 5px;font-weight: bold;float: right;width: 100px;margin-right: 5px;background:#147df0"
+						value="Confirmar" update="form-target form:msg">
+					</p:commandButton>
+
+					<p:commandButton icon="fa fa-fw fa-close"
+						style="margin-bottom: 5px;font-weight: bold;width: 100px;background:#e15e5ef0;"
+						value="Cancelar" onstart="start();"
+						oncomplete="stop();PF('target-dialog').hide();">
+					</p:commandButton>
+				</div>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Produto selecionado" widgetVar="produto-dialog"
+			position="top" style="margin-top: 100px" id="produto-dialog"
+			resizable="false" modal="true" closeOnEscape="true" responsive="true"
+			styleClass="fotoDialog">
+
+			<h:form id="form-dialogProduto">
+
+				<div class="ui-fluid" style="margin-top: 10px; text-align: center">
+					<ui:fragment id="photo"
+						rendered="#{relatorioVendasBean.produto.urlImagem != null}">
+						<img src="#{relatorioVendasBean.produto.urlImagem}"
+							style="width: 200px; height: 250px;" />
+					</ui:fragment>
+
+					<div
+						style="width: 80%; margin: auto; border-top: 1px solid #ccc; margin-top: 10px; margin-bottom: 10px"></div>
+
+					<p:button icon="fa fa-fw fa-list"
+						style="margin-bottom: 5px;font-weight: bold;float: right;width: 100px;margin-right: 5px;background:#147df0"
+						value="Detalhes" id="foto-button"
+						outcome="/cadastros/CadastroProdutos.xhtml" onclick="start();">
+
+						<f:param name="id" value="#{relatorioVendasBean.produtoId}" />
+					</p:button>
+
+					<p:commandButton icon="fa fa-fw fa-close"
+						style="margin-bottom: 5px;font-weight: bold;width: 100px;background:#e15e5ef0;"
+						value="Fechar" onstart="start();"
+						oncomplete="stop();PF('produto-dialog').hide();">
+					</p:commandButton>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="downloadLoading" showHeader="false" modal="true"
+			widgetVar="downloadLoading" header="Status" draggable="false"
+			closable="false" resizable="false">
+			<p:graphicImage name="images/loadingbar.gif"
+				library="manhattan-layout" width="50" />
+		</p:dialog>
+
+		<script type="text/javascript">
+			function start() {
+				PF('downloadLoading').show();
+			}
+
+			function stop() {
+				PF('downloadLoading').hide();
+			}
+		</script>
+
+	</ui:define>
+
+</ui:composition>

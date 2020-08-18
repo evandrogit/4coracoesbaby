@@ -1,0 +1,892 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Total de Lançamentos</ui:define>
+
+	<ui:define name="head">
+
+		<script type="text/javascript">
+		
+			function percentExtender2() {
+
+				var options = $.extend(true, {}, this.cfg.config);
+
+				this.cfg.config.options = {
+					legend : {
+						display : true,
+					},
+
+					scales : {
+						xAxes : [ {
+							display : true,
+						} ]
+					},
+
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								var valor = "R$ " + numberToReal(amount);
+								if (valor.includes("-.")) {
+									valor = valor.replace("-.", "-");
+								}
+								return valor;
+							}
+						}
+					},
+				};
+
+				$.extend(true, this.cfg.config, options);
+			}
+
+			/*
+				function percentExtender2() {
+					var tickColor = "#666";
+					var gridlineColor = "rgba(0,0,0,0.1)";
+
+					this.cfg.config.options = {
+						legend : {
+							display : true,
+						},
+
+						tooltips : {
+							callbacks : {
+
+								label : function(tooltipItem, data) {
+									var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+									return numberToReal(amount);
+								}
+							}
+						},
+					};
+				}
+			 */
+
+			function percentExtender3() {
+
+				this.cfg.config.options = {
+					legend : {
+						display : true,
+					},
+
+					title : {
+						display : true,
+						text : 'Despesas vs Quantidade'
+					},
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								var total = eval(data.datasets[tooltipItem.datasetIndex].data
+										.join("+"));
+
+								var label = tooltipItem.yLabel;
+
+								return "QTY: "
+										+ amount
+										+ ' / '
+										+ total
+										+ ' ( '
+										+ parseFloat(amount * 100 / total)
+												.toFixed(2) + '% )';
+							}
+						}
+					},
+				};
+			}
+
+			function percentExtender4() {
+				var tickColor = "#666";
+				var gridlineColor = "rgba(0,0,0,0.1)";
+
+				this.cfg.config.options = {
+					legend : {
+						display : true,
+					},
+
+					tooltips : {
+						callbacks : {
+
+							label : function(tooltipItem, data) {
+								var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+								return numberToReal(amount);
+							}
+						}
+					},
+				};
+			}
+
+			function numberToReal(numero) {
+				var numero = numero.toFixed(2).split('.');
+				numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+				return numero.join(',');
+			}
+		</script>
+
+		<style>
+@media ( min-width :220px) {
+	.panel-favorecido01 {
+		overflow: hidden;
+		max-height: 300px;
+		transition: max-height 1s ease-in-out;
+		width: 100%;
+	}
+	.panel-favorecido01.hide {
+		max-height: 0;
+		pointer-events: none;
+		padding-bottom: 4px;
+		margin-top: 0px;
+	}
+	.panel-favorecido02 {
+		overflow: hidden;
+		max-height: 300px;
+		transition: max-height 1s ease-in-out;
+		width: 100%;
+	}
+	.panel-favorecido02.hide {
+		max-height: 0;
+		pointer-events: none;
+		padding-bottom: 4px;
+		margin-top: 0px;
+	}
+	.panel-favorecido03 {
+		overflow: hidden;
+		max-height: 300px;
+		transition: max-height 1s ease-in-out;
+		width: 100%;
+	}
+	.panel-favorecido03.hide {
+		max-height: 0;
+		pointer-events: none;
+		padding-bottom: 4px;
+		margin-top: 0px;
+	}
+	.panel-favorecido04 {
+		overflow: hidden;
+		max-height: 300px;
+		transition: max-height 1s ease-in-out;
+		width: 100%;
+	}
+	.panel-favorecido04.hide {
+		max-height: 0;
+		pointer-events: none;
+		padding-bottom: 4px;
+		margin-top: 0px;
+	}
+	#target-dialog .ui-inputtext {
+		text-align: center;
+	}
+	.target {
+		margin-top: 35px;
+	}
+	.target a {
+		color: #ababab;
+		text-decoration: none;
+		font-weight: bold;
+		font-size: 12px;
+	}
+	.swal2-popup {
+		width: 28em;
+		max-width: 100%;
+		padding: 0 0 0.4em 0;
+		font-size: 0.75rem;
+	}
+	.swal2-popup #swal2-content {
+		font-weight: 400;
+	}
+	body .ui-selectcheckboxmenu-panel {
+		width: 76% !important;
+	}
+	.ui-fluid .ui-selectonemenu {
+		min-width: max-content !important;
+	}
+	.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+		width: 100%;
+	}
+	body .ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
+		right: 0;
+		height: 32px;
+		top: -2px;
+	}
+	.dateStop {
+		margin-left: 0px;
+	}
+	.barChart-01 {
+		width: 100%;
+		height: 150px;
+		margin-top: 17px;
+		margin-bottom: 20px;
+	}
+	.barChart-02 {
+		width: 100%;
+		height: 150px;
+		margin-top: 17px;
+		margin-bottom: 20px;
+	}
+	.barChart-02 {
+		width: 100%;
+		height: 150px;
+		margin-top: 15px;
+	}
+	.ano {
+		width: 100%;
+	}
+	.btn-pie.ui-button {
+		color: #6a6565;
+		background-color: #f2f2f200;
+		border: 1px solid #a8a8a8;
+		width: 32px;
+		float: right;
+		position: relative;
+		margin-top: -4px;
+	}
+	.btn-pie.ui-button.ui-state-hover {
+		background-color: #e8e5e5;
+	}
+	.btn-pie.ui-button.ui-state-focus {
+		background-color: #e8e5e5;
+	}
+	.btn-pie.ui-button.ui-state-active {
+		background-color: #f2f2f200;
+	}
+	.ui-fluid .ui-selectcheckboxmenu {
+		height: 29px;
+	}
+}
+
+@media ( min-width :460px) {
+	.target {
+		margin-top: 0px;
+	}
+	body .ui-selectcheckboxmenu-panel {
+		width: auto !important;
+	}
+	.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+		width: 90px;
+	}
+	body .ui-fluid .ui-trigger-calendar .ui-datepicker-trigger.ui-button {
+		right: 113px;
+		height: 32px;
+		top: -2px;
+	}
+	.dateStop {
+		margin-left: 20px;
+	}
+	.categoria {
+		width: 84%;
+	}
+	.barChart-01 {
+		width: 100%;
+		height: 270px;
+		margin-top: 47px;
+		margin-bottom: 0px;
+	}
+	.barChart-02 {
+		width: 100%;
+		height: 270px;
+		margin-top: 10px;
+		margin-bottom: 0px;
+	}
+	.ano {
+		width: 78% !important;
+	}
+	.btn-pie.ui-button {
+		float: left;
+		position: relative;
+		margin-top: 0px;
+		margin-left: -18px;
+		height: 29px;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="page-header">
+			<h1>Total de Lançamentos</h1>
+		</div>
+
+		<h:form id="form">
+			
+			<p:growl id="msg" closable="true" life="2000" showSummary="false"
+				showDetail="true" style="text-align: center" />
+				
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="panelgrid-noborder disabled disabled"
+				columnClasses="ui-grid-col-6, ui-grid-col-6">
+
+				<p:panel class="ui-lg-6 ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Lançamentos
+						por Dia</h3>
+
+					<p:panelGrid columns="4" id="painel" layout="grid" style="margin-bottom: -4px;"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1">
+
+						<p:outputLabel value="Data de início" for="data01" />
+						<p:datePicker id="data01"
+							value="#{relatorioLancamentosBean.dateStart}"
+							readonlyInput="true" pattern="dd/MM/yyyy" locale="pt"
+							showIcon="true">
+
+							<p:ajax event="dateSelect"
+								listener="#{relatorioLancamentosBean.createMixedModelPorDia}"
+								process="@this painel panel-favorecido01" update="barChart-despesasPorDia" />
+						</p:datePicker>
+
+
+						<p:outputLabel value="até" id="data02" />
+						<p:datePicker id="data-02"
+							value="#{relatorioLancamentosBean.dateStop}" readonlyInput="true"
+							styleClass="dateStop" pattern="dd/MM/yyyy" locale="pt"
+							showIcon="true">
+
+							<p:ajax event="dateSelect"
+								listener="#{relatorioLancamentosBean.createMixedModelPorDia}"
+								process="@this painel panel-favorecido01" update="barChart-despesasPorDia" />
+						</p:datePicker>
+
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu id="categoria1" style="width: 100%"
+							showHeader="true" emptyLabel="" label="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioLancamentosBean.categoriasPorDia}">
+
+							<f:selectItems
+								value="#{relatorioLancamentosBean.todasCategoriasLancamento}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioLancamentosBean.changeCategoriaPorDia}"
+							process="@this painel panel-favorecido01" styleClass="btn-pie" title="Atualizar"
+							onstart="start();" oncomplete="stop();"
+							update="favorecido01 barChart-despesasPorDia" />
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" layout="grid" id="panel-favorecido01"
+						styleClass="panelgrid-noborder disabled disabled panel-favorecido01 #{relatorioLancamentosBean.renderFavorecido01 ? '' : 'hide'}"
+						columnClasses="ui-grid-col-3, ui-grid-col-6">
+
+						<p:outputLabel value="Funcionário Favorecido" for="favorecido01" />
+						<p:selectOneMenu id="favorecido01" styleClass="hide"
+							value="#{relatorioLancamentosBean.usuario01}">
+
+							<f:selectItem itemLabel="Selecione" />
+							
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorDia}"
+								process="@this panel-favorecido01 painel"
+								update="barChart-despesasPorDia" />
+
+							<f:selectItems value="#{relatorioLancamentosBean.todosUsuarios}"
+								var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+					<p:commandButton rendered="false" icon="fa fa-pie-chart"
+						actionListener="#{relatorioLancamentosBean.prepareDonutModelPorDia}"
+						styleClass="btn-pie" title="Despesas por Quantidade"
+						oncomplete="PF('produtos-qty').show();"
+						update="form-dialog:pieChart-despesasPorQuantidade"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 35px;margin-right:10px" />
+
+					<p:barChart id="barChart-despesasPorDia"
+						model="#{relatorioLancamentosBean.mixedModelPorDia}"
+						styleClass="barChart-01" />
+						
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioLancamentosBean.definirTargetDiario}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel class="ui-lg-6  ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Lançamentos
+						por Semana</h3>
+
+					<p:panelGrid columns="2" layout="grid" id="painel-ano"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Ano" for="ano" />
+						<p:selectOneMenu id="ano" styleClass="ano"
+							value="#{relatorioLancamentosBean.ano01}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorSemana}"
+								process="@this painel-ano painel-semana panel-favorecido02"
+								update="barChart-despesasPorSemana" />
+							<f:selectItems value="#{relatorioLancamentosBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="4" id="painel-semana" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled" style="margin-bottom: -4px;"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1, ui-grid-col-4">
+
+						<p:outputLabel value="Nª Semana" for="num-semana1" />
+						<p:selectOneMenu id="num-semana1" style="width: 100%"
+							value="#{relatorioLancamentosBean.semana01}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorSemana}"
+								process="@this painel-ano painel-semana panel-favorecido02"
+								update="barChart-despesasPorSemana" />
+							<f:selectItems value="#{relatorioLancamentosBean.semanas}"
+								var="semana" itemLabel="#{semana}" itemValue="#{semana}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Até" for="num-semana2" />
+						<p:selectOneMenu id="num-semana2" style="width: 100%"
+							value="#{relatorioLancamentosBean.semana02}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorSemana}"
+								process="@this painel-ano painel-semana panel-favorecido02"
+								update="barChart-despesasPorSemana" />
+							<f:selectItems value="#{relatorioLancamentosBean.semanas}"
+								var="semana" itemLabel="#{semana}" itemValue="#{semana}"></f:selectItems>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu id="categoria2" style="width: 100%"
+							showHeader="true" emptyLabel="" label="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioLancamentosBean.categoriasPorSemana}">
+
+							<f:selectItems
+								value="#{relatorioLancamentosBean.todasCategoriasLancamento}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioLancamentosBean.changeCategoriaPorSemana}"
+							process="@this painel-ano painel-semana panel-favorecido02" styleClass="btn-pie"
+							title="Atualizar" onstart="start();" oncomplete="stop();"
+							update="barChart-despesasPorSemana" />
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" layout="grid" id="panel-favorecido02"
+						styleClass="panelgrid-noborder disabled disabled panel-favorecido02 #{relatorioLancamentosBean.renderFavorecido02 ? '' : 'hide'}"
+						columnClasses="ui-grid-col-3, ui-grid-col-6">
+
+						<p:outputLabel value="Funcionário Favorecido" for="favorecido02" />
+						<p:selectOneMenu id="favorecido02" styleClass="hide"
+							value="#{relatorioLancamentosBean.usuario02}">
+
+							<f:selectItem itemLabel="Selecione" />
+							
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorSemana}"
+								process="@this panel-favorecido02 painel-ano painel-semana"
+								update="barChart-despesasPorSemana" />
+
+							<f:selectItems value="#{relatorioLancamentosBean.todosUsuarios}"
+								var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+					<p:commandButton rendered="false" icon="fa fa-pie-chart"
+						actionListener="#{relatorioLancamentosBean.prepareDonutModelPorSemana}"
+						title="Despesas por Quantidade"
+						oncomplete="PF('produtos-qty').show();"
+						update="form-dialog:pieChart-despesasPorQuantidade"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 35px;margin-top:5px;margin-right:10px" />
+
+					<p:barChart id="barChart-despesasPorSemana"
+						model="#{relatorioLancamentosBean.mixedModelPorSemana}"
+						styleClass="barChart-02" />
+						
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioLancamentosBean.definirTargetSemanal}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+			</p:panelGrid>
+
+
+
+
+			<p:panelGrid columns="2" layout="grid"
+				style="margin-top:10px;margin-bottom:20px"
+				styleClass="panelgrid-noborder disabled disabled"
+				columnClasses="ui-grid-col-6, ui-grid-col-6">
+
+				<p:panel class="ui-lg-6 ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Lançamentos
+						por Mês</h3>
+
+					<p:panelGrid columns="2" layout="grid" id="painel-ano2"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-3, ui-grid-col-5">
+
+						<p:outputLabel value="Ano" for="ano2" />
+						<p:selectOneMenu id="ano2" styleClass="ano"
+							value="#{relatorioLancamentosBean.ano02}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorMes}"
+								process="@this painel-ano2 painel-mes panel-favorecido03"
+								update="barChart-despesasPorMes" />
+							<f:selectItems value="#{relatorioLancamentosBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+					<p:panelGrid columns="4" layout="grid" id="painel-mes"
+						styleClass="panelgrid-noborder disabled disabled" style="margin-bottom: -4px;"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1,ui-grid-col-4">
+
+						<p:outputLabel value="Nº Mês" for="mes1" />
+						<p:selectOneMenu id="mes1" style="width: 100%"
+							value="#{relatorioLancamentosBean.mes01}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorMes}"
+								process="@this painel-ano2 painel-mes panel-favorecido03"
+								update="barChart-despesasPorMes" />
+							<f:selectItems value="#{relatorioLancamentosBean.meses}"
+								var="mes" itemLabel="#{mes}" itemValue="#{mes}"></f:selectItems>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="até" for="mes2" />
+						<p:selectOneMenu id="mes2" style="width: 100%"
+							value="#{relatorioLancamentosBean.mes02}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorMes}"
+								process="@this painel-ano2 painel-mes panel-favorecido03"
+								update="barChart-despesasPorMes" />
+							<f:selectItems value="#{relatorioLancamentosBean.meses}"
+								var="mes" itemLabel="#{mes}" itemValue="#{mes}"></f:selectItems>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu id="categoria3" style="width: 100%"
+							showHeader="true" emptyLabel="" label="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioLancamentosBean.categoriasPorMes}">
+
+							<f:selectItems
+								value="#{relatorioLancamentosBean.todasCategoriasLancamento}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioLancamentosBean.changeCategoriaPorMes}"
+							process="@this painel-ano2 painel-mes panel-favorecido03" styleClass="btn-pie"
+							title="Atualizar" onstart="start();" oncomplete="stop();"
+							update="barChart-despesasPorMes" />
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" layout="grid" id="panel-favorecido03"
+						styleClass="panelgrid-noborder disabled disabled panel-favorecido03 #{relatorioLancamentosBean.renderFavorecido03 ? '' : 'hide'}"
+						columnClasses="ui-grid-col-3, ui-grid-col-6">
+
+						<p:outputLabel value="Funcionário Favorecido" for="favorecido03" />
+						<p:selectOneMenu id="favorecido03" styleClass="hide"
+							value="#{relatorioLancamentosBean.usuario03}">
+
+							<f:selectItem itemLabel="Selecione" />
+							
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorMes}"
+								process="@this panel-favorecido03 painel-ano2 painel-mes"
+								update="barChart-despesasPorMes" />
+
+							<f:selectItems value="#{relatorioLancamentosBean.todosUsuarios}"
+								var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+
+					<p:commandButton rendered="false" icon="fa fa-pie-chart"
+						actionListener="#{relatorioLancamentosBean.prepareDonutModelPorMes}"
+						title="Despesas por Quantidade"
+						oncomplete="PF('produtos-qty').show();"
+						update="form-dialog:pieChart-despesasPorQuantidade"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 35px;margin-top:5px;margin-right:10px" />
+
+					<p:barChart model="#{relatorioLancamentosBean.mixedModelPorMes}"
+						id="barChart-despesasPorMes" styleClass="barChart-02" />
+						
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioLancamentosBean.definirTargetMensal}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel class="ui-lg-6  ui-fluid itens-add"
+					style="padding-bottom: 0px !important; margin-top:10px;width:100%">
+
+					<h3 style="font-weight: bold; margin-top: -8px;">Lançamentos
+						por Ano</h3>
+
+					<p:panelGrid columns="4" id="painel3" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled" style="margin-bottom: -4px;"
+						columnClasses="ui-grid-col-3, ui-grid-col-4, ui-grid-col-1, ui-grid-col-4">
+
+						<p:outputLabel value="Ano" for="ano3" />
+						<p:selectOneMenu id="ano3" style="width: 100%"
+							value="#{relatorioLancamentosBean.ano03}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorAno}"
+								process="@this panel-favorecido04 painel3" update="barChart-despesasPorAno" />
+							<f:selectItems value="#{relatorioLancamentosBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Até" for="ano4" />
+						<p:selectOneMenu id="ano4" style="width: 100%"
+							value="#{relatorioLancamentosBean.ano04}">
+
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorAno}"
+								process="@this panel-favorecido04 painel3" update="barChart-despesasPorAno" />
+							<f:selectItems value="#{relatorioLancamentosBean.anos}" var="ano"
+								itemLabel="#{ano}" itemValue="#{ano}"></f:selectItems>
+						</p:selectOneMenu>
+
+
+						<p:outputLabel value="Categoria" />
+						<p:selectCheckboxMenu id="categoria4" style="width: 100%"
+							showHeader="true" emptyLabel="" label="" filter="true"
+							filterMatchMode="startsWith"
+							value="#{relatorioLancamentosBean.categoriasPorAno}">
+
+							<f:selectItems
+								value="#{relatorioLancamentosBean.todasCategoriasLancamento}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria.nome}"></f:selectItems>
+						</p:selectCheckboxMenu>
+
+						<p:commandButton icon="fa fa-refresh"
+							action="#{relatorioLancamentosBean.changeCategoriaPorAno}"
+							process="@this panel-favorecido04 painel3" styleClass="btn-pie" title="Atualizar"
+							onstart="start();" oncomplete="stop();"
+							update="barChart-despesasPorAno" />
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" layout="grid" id="panel-favorecido04"
+						styleClass="panelgrid-noborder disabled disabled panel-favorecido04 #{relatorioLancamentosBean.renderFavorecido04 ? '' : 'hide'}"
+						columnClasses="ui-grid-col-3, ui-grid-col-6">
+
+						<p:outputLabel value="Funcionário Favorecido" for="favorecido04" />
+						<p:selectOneMenu id="favorecido04" styleClass="hide"
+							value="#{relatorioLancamentosBean.usuario04}">
+
+							<f:selectItem itemLabel="Selecione" />
+							
+							<p:ajax event="change"
+								listener="#{relatorioLancamentosBean.createMixedModelPorAno}"
+								process="@this panel-favorecido04 painel3"
+								update="barChart-despesasPorAno" />
+
+							<f:selectItems value="#{relatorioLancamentosBean.todosUsuarios}"
+								var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+					<p:commandButton rendered="false" icon="fa fa-pie-chart"
+						actionListener="#{relatorioLancamentosBean.prepareDonutModelPorAno}"
+						styleClass="btn-pie" title="Despesas por Quantidade"
+						oncomplete="PF('produtos-qty').show();"
+						update="form-dialog:pieChart-despesasPorQuantidade"
+						style="color:#6a6565;background-color:#f2f2f200;border: 1px solid #a8a8a8;float: right; width: 35px;margin-right:10px" />
+
+					<p:barChart id="barChart-despesasPorAno"
+						model="#{relatorioLancamentosBean.mixedModelPorAno}"
+						styleClass="barChart-01" />
+						
+					<p:panelGrid columns="1" layout="grid" style="text-align: center"
+						styleClass="panelgrid-noborder disabled disabled target"
+						columnClasses="ui-grid-col-12">
+
+						<p:commandLink value="Definir target" process="@this"
+							actionListener="#{relatorioLancamentosBean.definirTargetAnual}"
+							onstart="start();" update="form-target"
+							oncomplete="stop();PF('target-dialog').show();">
+
+							<p:resetInput target="form-target" />
+						</p:commandLink>
+					</p:panelGrid>
+
+				</p:panel>
+
+			</p:panelGrid>
+
+		</h:form>
+
+		<p:dialog header="Despesas por Quantidade" widgetVar="produtos-qty"
+			id="produtos-qty" resizable="false" modal="true" closeOnEscape="true"
+			responsive="true" position="center" styleClass="modal-donut"
+			width="250px">
+
+			<h:form id="form-dialog">
+
+				<div class="ui-fluid">
+
+					<div class="card card-w-title ui-fluid"
+						style="padding: 0px 5px 0px 5px; padding-bottom: 0px !important; margin-bottom: 10px; text-align: center;">
+
+						<p:donutChart id="pieChart-despesasPorQuantidade"
+							model="#{relatorioLancamentosBean.donutModel}"
+							style="width: 100%; height: 320px;margin-top:10px" />
+
+
+						<p:commandButton icon="fa fa-fw fa-close"
+							style="margin-top: 5px;font-weight: bold;width: 120px;background: #f3f3f3f0;color: #716c6c;border: 1px solid #484545;"
+							value="Fechar" oncomplete="PF('produtos-qty').hide();">
+						</p:commandButton>
+
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Definir target" widgetVar="target-dialog"
+			position="top" style="margin-top: 100px" id="target-dialog"
+			resizable="false" modal="true" closeOnEscape="true" responsive="true">
+
+			<h:form id="form-target">
+
+				<div class="ui-fluid" style="margin-top: 10px; text-align: center">
+
+					<p:panelGrid columns="1" layout="grid"
+						styleClass="panelgrid-noborder disabled disabled"
+						columnClasses="ui-grid-col-12">
+
+						<p:outputLabel value="#{relatorioLancamentosBean.targetMsg}"
+							for="target" style="font-weight: bold" />
+						<p:inputNumber id="target" decimalPlaces="2" autocomplete="off"
+							symbol="R$ " value="#{relatorioLancamentosBean.target}"
+							required="true" requiredMessage="Target deve ser informado." />
+					</p:panelGrid>
+
+					<div
+						style="width: 80%; margin: auto; border-top: 1px solid #ccc; margin-top: 10px; margin-bottom: 10px"></div>
+
+					<p:commandButton widgetVar="btn-confirmar" id="btn-confirmar"
+						action="#{relatorioLancamentosBean.confirmarTarget}"
+						icon="fa fa-fw fa-check" process="@this form-target"
+						onstart="PF('downloadLoading').show(); PF('btn-confirmar').disable();"
+						onsuccess="PF('downloadLoading').hide(); PF('btn-confirmar').enable();"
+						oncomplete="if (!args.validationFailed) PF('target-dialog').hide();"
+						style="margin-bottom: 5px;font-weight: bold;float: right;width: 100px;margin-right: 5px;background:#147df0"
+						value="Confirmar" update="form-target form:msg">
+					</p:commandButton>
+
+					<p:commandButton icon="fa fa-fw fa-close"
+						style="margin-bottom: 5px;font-weight: bold;width: 100px;background:#e15e5ef0;"
+						value="Cancelar" onstart="start();"
+						oncomplete="stop();PF('target-dialog').hide();">
+					</p:commandButton>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="downloadLoading" showHeader="false" modal="true"
+			widgetVar="downloadLoading" header="Status" draggable="false"
+			closable="false" resizable="false">
+			<p:graphicImage name="images/loadingbar.gif"
+				library="manhattan-layout" width="50" />
+		</p:dialog>
+
+		<script type="text/javascript">
+			function start() {
+				PF('downloadLoading').show();
+			}
+
+			function stop() {
+				PF('downloadLoading').hide();
+			}
+			
+			function ocultarFavorecido01() {
+				$(".panel-favorecido01").addClass("hide");
+			}
+
+			function mostrarFavorecido01() {
+				$(".panel-favorecido01").removeClass("hide");
+			}
+			
+			function ocultarFavorecido02() {
+				$(".panel-favorecido02").addClass("hide");
+			}
+
+			function mostrarFavorecido02() {
+				$(".panel-favorecido02").removeClass("hide");
+			}
+			
+			function ocultarFavorecido03() {
+				$(".panel-favorecido03").addClass("hide");
+			}
+
+			function mostrarFavorecido03() {
+				$(".panel-favorecido03").removeClass("hide");
+			}
+			
+			function ocultarFavorecido04() {
+				$(".panel-favorecido04").addClass("hide");
+			}
+
+			function mostrarFavorecido04() {
+				$(".panel-favorecido04").removeClass("hide");
+			}
+		</script>
+
+	</ui:define>
+
+</ui:composition>
