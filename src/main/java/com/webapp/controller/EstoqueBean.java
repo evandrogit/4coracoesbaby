@@ -413,7 +413,7 @@ public class EstoqueBean implements Serializable {
 		CategoriaProduto categoriaProduto = new CategoriaProduto();
 		categoriaProduto.setNome(categoria);
 		filter.setCategoriaProduto(categoriaProduto);		
-		filter.setEmpresa("Decore");
+		filter.setEmpresa("EMPRESA");
 		produtosFiltrados = produtos.filtrados(filter);
 		
 		
@@ -440,7 +440,7 @@ public class EstoqueBean implements Serializable {
 	
 	public void buscarProdutosEmDestaque() {
 				
-		filter.setEmpresa("Decore");
+		filter.setEmpresa("EMPRESA");
 		produtosEmDestaque = produtos.produtosEmDestaque(filter);
 		
 		for (Produto produto : produtosEmDestaque) {
@@ -467,7 +467,7 @@ public class EstoqueBean implements Serializable {
 	
 	public void buscarMaisVendidos() {
 		maisVendidos = new ArrayList<Produto>();
-		List<Object[]> produtosMaisVendidos = itensVendas.maisVendidos("2020", null, "Decore");
+		List<Object[]> produtosMaisVendidos = itensVendas.maisVendidos("2020", null, "EMPRESA");
 		 for (Object[] object : produtosMaisVendidos) {
 			Produto produto = produtos.porId((Long) object[1]);
 			produto.setDescricao(convertToTitleCaseIteratingChars(produto.getDescricao()));
@@ -497,7 +497,7 @@ public class EstoqueBean implements Serializable {
 
 
 	public void buscarCategorias() {		
-		todasCategoriasProdutos = categoriasProdutos.todosEmDestaque("Decore");		
+		todasCategoriasProdutos = categoriasProdutos.todosEmDestaque("EMPRESA");		
 	}
 	
 	
