@@ -17,7 +17,7 @@ public class ImagesViewBean {
     public void init() {
         images = new ArrayList<String>();
         for (int i = 1; i <= 2; i++) {
-            images.add("decore"+i);
+            images.add("baby0"+i);
         }
     }
  
