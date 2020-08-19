@@ -31,6 +31,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
+import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
 import com.webapp.mail.configuration.AppConfig;
 import com.webapp.mail.model.CustomerInfo;
@@ -308,6 +309,15 @@ public class CarrinhoBean implements Serializable {
 			    .setUnitPrice(produto.getPrecoDeVenda().floatValue());
 			preference.appendItem(item);			
 		}
+		
+		
+		BackUrls backUrls = new BackUrls(
+                "https://quatrocoracoesbaby.herokuapp.com/success",
+                "http://quatrocoracoesbaby.herokuapp.com/pending",
+                "http://quatrocoracoesbaby.herokuapp.com/failure");
+
+		preference.setBackUrls(backUrls);
+		
 		
 		com.mercadopago.resources.datastructures.preference.Payer payer = new com.mercadopago.resources.datastructures.preference.Payer()
         .setEmail(pedido.getEmail());
