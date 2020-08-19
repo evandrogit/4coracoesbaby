@@ -862,7 +862,7 @@
 						<p:inputMask id="cep" style="width:100%;text-align:left;"
 							mask="99999-999" autoClear="false"
 							requiredMessage="CEP deve ser informado." required="true" label="CEP"
-							value="#{carrinhoBean.pedido.cep}" placeholder="CEP">
+							value="#{carrinhoBean.pedido.cep}">
 							
 							<p:ajax event="blur" onstart="start__();" oncomplete="stop__();" process="@this" update="panel-endereco" listener="#{carrinhoBean.buscaEnderecoPorCEP}" />
 						</p:inputMask>
@@ -879,7 +879,7 @@
 							requiredMessage="Endereço deve ser informado." required="true" label="Endereço"
 							value="#{carrinhoBean.pedido.endereco}" placeholder="Endereço" />
 							
-						<p:message for="endereco" />
+						<p:message for="endereco" style="margin-top:5px;" />
 					</p:panelGrid>
 					
 					<p:panelGrid columns="1" layout="grid"
@@ -891,7 +891,7 @@
 							requiredMessage="Número deve ser informado." required="true" label="Número"
 							value="#{carrinhoBean.pedido.numero}" placeholder="Número" />
 							
-						<p:message for="numero" />
+						<p:message for="numero" style="margin-top:5px;" />
 					</p:panelGrid>
 							
 				</p:panelGrid>
@@ -909,7 +909,7 @@
 						<p:inputText id="complemento" style="width:100%;text-align:left;"
 							value="#{carrinhoBean.pedido.complemento}" placeholder="Complemento" />
 							
-						<p:message for="complemento" />
+						<p:message for="complemento" style="margin-top:5px;" />
 					</p:panelGrid>
 								
 					<p:panelGrid columns="1" layout="grid"
