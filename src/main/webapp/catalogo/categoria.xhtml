@@ -76,13 +76,21 @@
 			    background-color: #f5719c;
 			    color: #ffffff;
 			}
+			.logotipo {
+			    margin-left: 2px;
+			    height: 48px;
+			    width: 50%;
+			    margin-top: -1px;
+			    padding: 0px;
+			}
+			.pedido a {
+				color: #fff;
+				text-decoration:none;
+			}
 			
 			
 			.navbar-inverse {
 			    z-index: 999999;
-			}
-			.navbar-brand {
-			    padding: 15px 5px;
 			}
 			.ui-datagrid-content-empty {
 			    font-weight: normal
@@ -164,10 +172,7 @@
 				display:block;
 				color: #9d9d9d;
 			}
-			.pedido a {
-				color: #9d9d9d;
-				text-decoration:none;
-			}
+			
 			.pedido a:hover {
 				color: white;
 			}
@@ -325,13 +330,6 @@
 			#myFooter ul {
 			    font-size: 12px;
 			}
-			.logotipo {
-			    margin-left: 2px;
-			    height: 48px;
-			    width: 50%;
-			    margin-top: -1px;
-			    padding: 0px;
-			}
 			
 			.spinner {
 			  margin: 100px auto;
@@ -416,6 +414,7 @@
 			   	height: 50px;
 			    margin-top: -1px;
 			    padding: 0px;
+			    width:auto;
 			}
 			#myFooter ul {
 			    font-size: 14px;
@@ -554,7 +553,7 @@
 				<a class="navbar-brand" onclick="start(this);" href="products.xhtml"></a>
 			</div>
 			
-			<div class="pedido" style="float: right;margin-top: -32px;margin-right: 56px;">
+			<div class="pedido" style="float: right;margin-top: -36px;margin-right: 56px;">
 				<a onclick="start(this);" href="cart.xhtml">Meu Pedido<span class="badge badge-light">#{carrinhoBean.totalDeItens}</span></a>
 			</div>
 			

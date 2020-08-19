@@ -35,18 +35,73 @@
 	
 	<style>
 		@media ( min-width :220px) {
-			.navbar-inverse {
-			    z-index: 999999;
+			#myFooter {
+    			background-color: #f2bacc !important;
+    		}
+    		#myFooter h5 {
+			    color: #676767;
+			 }
+			 #myFooter a {
+			    color: #545252;
 			}
-			.navbar-brand {
-			    padding: 15px 5px;
+			#myFooter .footer-copyright {
+    			background-color: #f388aa;
+    		}
+    		#myFooter .footer-copyright p {
+			    color: #fbfaf9;
+			}
+			.navbar-inverse .navbar-toggle {
+			    border-color: #fff;
+			}
+			.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+			    background-color: #f2bacc;
+			}
+			.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+			    border-color: #ffffff;
+			}
+			.navbar-inverse {
+			    background-color: #f0abc2cf !important;
+			    border-color: #ffffff !important;
+			}
+			.navbar-inverse .navbar-brand {
+			    color: #ffffff !important;
+			}
+			.navbar-inverse .navbar-nav > li > a {
+			    color: #ffffff !important;
+			}
+			.badge-light {
+				float: right;
+			    margin-top: -8px;
+			    font-size: 11px;
+			    padding: 2px 4px;			    
+			    background-color: #f5719c;
+			    color: #ffffff;
 			}
 			.logotipo {
-				margin-left: 14px;
-			    width: 33px;
-			    height: 35px;
-			    margin-top: 8px;
+			    margin-left: 2px;
+			    height: 48px;
+			    width: 50%;
+			    margin-top: -1px;
 			    padding: 0px;
+			}
+			.btn-adicionar.ui-button {
+				font-weight: normal;
+			    height: 34px;
+			    background-color: #ed3c76;
+			    border-color: #ed3c76;
+			}
+			.btn-adicionar.ui-button.ui-state-hover {
+			    background-color: #ff6899;
+    			border-color: #ff6899;
+			}
+			.pedido a {
+				color: #fff;
+				text-decoration:none;
+			}
+			
+			
+			.navbar-inverse {
+			    z-index: 999999;
 			}
 			#myFooter .footer-copyright p {
 			    font-size: 12px;
@@ -63,21 +118,9 @@
     		#myFooter ul {
 			    font-size: 12px;
 			}
-			.badge-light {
-				float: right;
-			    margin-top: -8px;
-			    font-size: 11px;
-			    padding: 2px 4px;
-			    background-color: #FEB10F;
-			    color: #333333;
-			}
 			.pedido {
 				display:block;
 				color: #9d9d9d;
-			}
-			.pedido a {
-				color: #9d9d9d;
-				text-decoration:none;
 			}
 			.pedido a:hover {
 				color: white;
@@ -238,8 +281,11 @@
 		
 		@media ( min-width :640px) {
 			.logotipo {
-				margin-left: 4px;
-				margin-top: 7px;
+				margin-left: 14px;
+			   	height: 50px;
+			    margin-top: -1px;
+			    padding: 0px;
+			    width:auto;
 			}
 			.navbar > .container .navbar-brand {
 			    margin-left: 0px;
@@ -289,11 +335,11 @@
 						class="icon-bar"></span>
 				</button>
 				
-				<img class="navbar-brand logotipo" src="img/logo.png" />
-				<a class="navbar-brand" onclick="start_(this);" href="products.xhtml">Decore Web Store</a>
+				<img class="navbar-brand logotipo" src="img/baby4.png" />
+				<a class="navbar-brand" onclick="start_(this);" href="home.xhtml"></a>
 			</div>
 			
-			<div class="pedido" style="float: right;margin-top: -32px;margin-right: 56px;">
+			<div class="pedido" style="float: right;margin-top: -36px;margin-right: 56px;">
 				<a onclick="start_(this);" href="cart.xhtml">Meu Pedido<span class="badge badge-light">#{carrinhoBean.totalDeItens}</span></a>
 			</div>
 			
@@ -313,8 +359,8 @@
 	<div class="container" id="content" style="margin-bottom:50px;margin-top: -30px;">
 
 		<p:breadCrumb style="margin-bottom:16px;">
-			<p:menuitem value="Home" onclick="start_(this);" url="products.xhtml" />
-		    <p:menuitem value="Categorias" onclick="start_(this);" url="products.xhtml" />
+			<p:menuitem value="Home" onclick="start_(this);" url="home.xhtml" />
+		    <p:menuitem value="Categorias" onclick="start_(this);" url="home.xhtml" />
 		    <p:menuitem value="#{cadastroProdutoBean.produto.categoriaProduto.nome}" onclick="start_(this);" outcome="categoria.xhtml">
 		    	<f:param name="id" value="#{cadastroProdutoBean.produto.categoriaProduto.id}" />
 		    </p:menuitem>
@@ -390,10 +436,9 @@
 						value="#{cadastroProdutoBean.produto.quantidadePedido}">
 					</p:inputText>
 				
-					<p:commandButton value="Adicionar ao pedido" id="btn-adicionar"
+					<p:commandButton value="Adicionar ao pedido" id="btn-adicionar" styleClass="btn-adicionar"
 						onstart="start();" icon="fa fa-shopping-cart" iconPos="right"
-						action="#{carrinhoBean.adicionarNoCarrinho(cadastroProdutoBean.produto)}"
-						style="font-weight: normal;height: 34px;background-color: #337ab7;border-color: #2e6da4;">
+						action="#{carrinhoBean.adicionarNoCarrinho(cadastroProdutoBean.produto)}">
 					</p:commandButton>
 				</p:panel>
 
@@ -411,20 +456,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-5">
-                    <a href="javascript:void(0);">
-                    		<img class="logo" src="img/decore-logo.jpg" /></a>
                 </div>
                 <div class="col-sm-2">
                     <h5>Inicio</h5>
                     <ul>
-                        <li><a onclick="start_(this);" href="index.xhtml">Home</a></li>
+                        <li><a onclick="start_(this);" href="home.xhtml">Home</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
                     <h5>Contato</h5>
                     <ul>
-                        <li><a href="javascript:void(0);">+55 92 99427-9086</a></li>
-                        <li><a href="javascript:void(0);">decoreportas@gmail.com</a></li>
+                        <li><a href="javascript:void(0);">+55 92 98460-1310</a></li>
+                        <li><a href="javascript:void(0);">4coracoesbaby@gmail.com</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
