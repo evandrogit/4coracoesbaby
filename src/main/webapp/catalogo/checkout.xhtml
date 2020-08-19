@@ -88,6 +88,7 @@
 				color: #fff;
 				text-decoration:none;
 			}
+			
 		.grid-card.ui-panelgrid .ui-panelgrid-cell {
 		    padding: 0px;
 		}
@@ -147,8 +148,8 @@
 		    margin-top: -2px;
 		    font-size: 11px;
 		    padding: 2px 4px;
-		    background-color: #FEB10F;
-		    color: #333333;
+		    background-color: #f5719c;
+		    color: #fff;
 		    position: relative;
 		    right: 0;
 		    margin-right: 1px;
@@ -864,7 +865,7 @@
 							requiredMessage="CEP deve ser informado." required="true" label="CEP"
 							value="#{carrinhoBean.pedido.cep}">
 							
-							<p:ajax event="blur" onstart="start__();" oncomplete="stop__();" process="@this" update="panel-endereco panel-endereco_" listener="#{carrinhoBean.buscaEnderecoPorCEP}" />
+							<p:ajax event="blur" onstart="start__();" oncomplete="stop__();" process="@this" update="endereco bairro" listener="#{carrinhoBean.buscaEnderecoPorCEP}" />
 						</p:inputMask>
 						
 						<p:message for="cep" styleClass="msg-require" style="margin-top:5px;" />
