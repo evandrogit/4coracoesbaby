@@ -1,8 +1,13 @@
 package com.webapp.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -18,6 +23,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -96,7 +103,38 @@ public class CarrinhoBean implements Serializable {
         List<Bairro> listaDeBairros = bairros.filtrados(filtro);       
         
         return listaDeBairros;
-    }	
+    }
+	
+	
+	public void buscaEnderecoPorCEP() throws IOException {
+		
+		String json;        
+
+        try {
+            URL url = new URL("http://viacep.com.br/ws/"+ pedido.getCep() +"/json");
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            StringBuilder jsonSb = new StringBuilder();
+
+            br.lines().forEach(l -> jsonSb.append(l.trim()));
+            json = jsonSb.toString();
+            
+            JSONObject jObj = new JSONObject(json);
+			pedido.setEndereco(jObj.get("logradouro").toString());
+			pedido.setBairro(jObj.get("bairro").toString());
+			
+			br.close();
+            
+        } catch (JSONException e) {
+        	pedido.setEndereco("");
+			pedido.setBairro("");
+            //throw new RuntimeException(e);
+        }
+		
+		System.out.println();
+	}
 	
 	
 	public void pagarComMercadoPago() throws IOException, MPException {

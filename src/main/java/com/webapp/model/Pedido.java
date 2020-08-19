@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -89,10 +87,17 @@ public class Pedido implements Serializable {
 	@Column(nullable = false, columnDefinition="TEXT")
 	private String endereco;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Bairro bairro;
+	@NotBlank
+	@Column(nullable = false, length = 10)
+	private String numero;
+	
+	@NotBlank
+	@Column(nullable = true, length = 10)
+	private String complemento;
+	
+	@NotBlank
+	@Column(nullable = false, length = 60)
+	private String bairro;
 	
 	@NotBlank
 	@Column(nullable = false, length = 10)
@@ -236,11 +241,27 @@ public class Pedido implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public Bairro getBairro() {
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
 		return bairro;
 	}
 
-	public void setBairro(Bairro bairro) {
+	public void setBairro(String bairro) {
 		this.bairro = bairro;
 	}
 
