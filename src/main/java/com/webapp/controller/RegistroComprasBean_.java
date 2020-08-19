@@ -38,7 +38,7 @@ import com.webapp.util.jsf.FacesUtil;
 
 @Named
 @ViewScoped
-public class RegistroComprasBean implements Serializable {
+public class RegistroComprasBean_ implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -220,7 +220,7 @@ public class RegistroComprasBean implements Serializable {
 						/* Atualizar custo total e custo medio un. */
 						produto.setCustoTotal(new BigDecimal(produto.getCustoTotal().doubleValue() + (itemCompra.getQuantidade().longValue() * itemCompra.getValorUnitario().doubleValue())));					
 						
-						Long saldo =  produto.getQuantidadeAtual();//(Long) itensCompras.saldoPorProduto(produto);
+						Long saldo = (Long) itensCompras.saldoPorProduto(produto);
 						System.out.println(produto.getCustoTotal().doubleValue() + " / " + saldo.longValue());
 						produto.setCustoMedioUnitario(new BigDecimal(produto.getCustoTotal().doubleValue() / saldo.longValue()));
 					}
@@ -460,7 +460,7 @@ public class RegistroComprasBean implements Serializable {
 					/* Atualizar custo total e custo medio un. */
 					produto.setCustoTotal(new BigDecimal(produto.getCustoTotal().doubleValue() + (itemCompra.getQuantidade().longValue() * itemCompra.getValorUnitario().doubleValue())));					
 					
-					Long saldo = produto.getQuantidadeAtual();//(Long) itensCompras.saldoPorProduto(produto);
+					Long saldo = (Long) itensCompras.saldoPorProduto(produto);
 					System.out.println(produto.getCustoTotal().doubleValue() + " / " + saldo.longValue());
 					produto.setCustoMedioUnitario(new BigDecimal(produto.getCustoTotal().doubleValue() / saldo.longValue()));
 				
@@ -473,7 +473,7 @@ public class RegistroComprasBean implements Serializable {
 						/* Atualizar custo total e custo medio un. */
 						produto.setCustoTotal(new BigDecimal(produto.getCustoTotal().doubleValue() + (itemCompra.getQuantidade().longValue() * itemCompra.getValorUnitario().doubleValue())));					
 						
-						Long saldo = produto.getQuantidadeAtual();//(Long) itensCompras.saldoPorProduto(produto);
+						Long saldo = (Long) itensCompras.saldoPorProduto(produto);
 						System.out.println(produto.getCustoTotal().doubleValue() + " / " + saldo.longValue());
 						produto.setCustoMedioUnitario(new BigDecimal(produto.getCustoTotal().doubleValue() / saldo.longValue()));
 					}					
