@@ -91,7 +91,6 @@ public class Pedido implements Serializable {
 	@Column(nullable = false, length = 10)
 	private String numero;
 	
-	@NotBlank
 	@Column(nullable = true, length = 10)
 	private String complemento;
 	
