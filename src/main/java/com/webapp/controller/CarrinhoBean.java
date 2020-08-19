@@ -31,6 +31,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
+import com.mercadopago.resources.Preference.AutoReturn;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
 import com.webapp.mail.configuration.AppConfig;
@@ -312,11 +313,12 @@ public class CarrinhoBean implements Serializable {
 		
 		
 		BackUrls backUrls = new BackUrls(
-                "https://quatrocoracoesbaby.herokuapp.com/success",
+                "https://quatrocoracoesbaby.herokuapp.com/catalogo/success",
                 "http://quatrocoracoesbaby.herokuapp.com/pending",
                 "http://quatrocoracoesbaby.herokuapp.com/failure");
 
 		preference.setBackUrls(backUrls);
+		preference.setAutoReturn(AutoReturn.approved);
 		
 		
 		com.mercadopago.resources.datastructures.preference.Payer payer = new com.mercadopago.resources.datastructures.preference.Payer()
