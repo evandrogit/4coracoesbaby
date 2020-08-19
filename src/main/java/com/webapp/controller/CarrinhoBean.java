@@ -305,9 +305,9 @@ public class CarrinhoBean implements Serializable {
 		atualizarCarrinho();
 		
 		if(totalDeItens > 0) {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/webstore/decore/checkout.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/checkout.xhtml");
 		} else {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/webstore/decore/cart.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/carrinho.xhtml");
 		}
 				
 	}
@@ -354,7 +354,7 @@ public class CarrinhoBean implements Serializable {
 		
 		try {
 			Thread.sleep(2000);
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/webstore/decore/cart.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/carrinho.xhtml");
 			
 		} catch (InterruptedException e) {
 		}

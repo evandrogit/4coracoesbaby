@@ -29,6 +29,60 @@
 	
 	<style>
 	@media ( min-width :220px) {
+		#myFooter {
+    			background-color: #f2bacc !important;
+    		}
+    		#myFooter h5 {
+			    color: #676767;
+			 }
+			 #myFooter a {
+			    color: #545252;
+			}
+			#myFooter .footer-copyright {
+    			background-color: #f388aa;
+    		}
+    		#myFooter .footer-copyright p {
+			    color: #fbfaf9;
+			}
+			.navbar-inverse .navbar-toggle {
+			    border-color: #fff;
+			}
+			.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+			    background-color: #f2bacc;
+			}
+			.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+			    border-color: #ffffff;
+			}
+			.navbar-inverse {
+			    background-color: #f0abc2cf !important;
+			    border-color: #ffffff !important;
+			}
+			.navbar-inverse .navbar-brand {
+			    color: #ffffff !important;
+			}
+			.navbar-inverse .navbar-nav > li > a {
+			    color: #ffffff !important;
+			}
+			.badge-light {
+				float: right;
+			    margin-top: -8px;
+			    font-size: 11px;
+			    padding: 2px 4px;			    
+			    background-color: #f5719c;
+			    color: #ffffff;
+			}
+			.logotipo {
+			    margin-left: 2px;
+			    height: 48px;
+			    width: 50%;
+			    margin-top: -1px;
+			    padding: 0px;
+			}
+			.pedido a {
+				color: #fff;
+				text-decoration:none;
+			}
+			
 		.navbar-inverse {
 		    z-index: 999999;
 		}
@@ -149,7 +203,7 @@
 		    color: #000000;
 		}
 		.finalizar.ui-button {
-		    background-color: #b9a52b;
+		    background-color: #ffc300b8;
 		    width: 190px;
 		    padding: 3px;
 		    margin-top: -83px;
@@ -268,20 +322,12 @@
 			max-width: 100%; 
 			max-height: 50px;
 		}
-		.badge-light {
-			float: right;
-		    margin-top: -8px;
-		    font-size: 11px;
-		    padding: 2px 4px;
-		    background-color: #FEB10F;
-		    color: #333333;
-		}
 		.pedido {
 			display:block;
 			color: #9d9d9d;
 		}
 		.pedido a {
-			color: #9d9d9d;
+			color: #fff;
 			text-decoration:none;
 		}
 		.pedido a:hover {
@@ -325,16 +371,6 @@
 		
 		.box:hover::after {
 		    opacity: 1;
-		}
-		.navbar-brand {
-		    padding: 15px 5px;
-		}
-		.logotipo {
-			margin-left: 14px;
-		    width: 33px;
-		    height: 35px;
-		    margin-top: 8px;
-		    padding: 0px;
 		}
 		
 		.spinner_ {
@@ -467,8 +503,11 @@
 	}
 	@media ( min-width :640px) {
 		.logotipo {
-			margin-left: 4px;
-			margin-top: 7px;
+			margin-left: 14px;
+		   	height: 50px;
+		    margin-top: -1px;
+		    padding: 0px;
+		    width:auto;
 		}
 		.navbar > .container .navbar-brand {
 		    margin-left: 0px;
@@ -563,17 +602,17 @@
 						class="icon-bar"></span>
 				</button>
 				
-				<img class="navbar-brand logotipo" src="img/logo.png" />
-				<a class="navbar-brand" onclick="start_(this);" href="products.xhtml">Decore Web Store</a>
+				<img class="navbar-brand logotipo" src="img/baby4.png" />
+				<a class="navbar-brand" onclick="start_(this);" href="home.xhtml"></a>
 			</div>
 			
-			<div class="pedido" style="float: right;margin-top: -32px;margin-right: 56px;">
-				<p:link id="link1" onclick="start_(this);" href="cart.xhtml">Meu Pedido<span class="badge badge-light">#{carrinhoBean.totalDeItens}</span></p:link>
+			<div class="pedido" style="float: right;margin-top: -36px;margin-right: 56px;">
+				<p:link id="link1" onclick="start_(this);" href="carrinho.xhtml">Meu Pedido<span class="badge badge-light">#{carrinhoBean.totalDeItens}</span></p:link>
 			</div>
 			
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="pedido-menu"><p:link id="link2" onclick="start_(this);" href="cart.xhtml"><span
+					<li class="pedido-menu"><p:link id="link2" onclick="start_(this);" href="carrinho.xhtml"><span
 							class="glyphicon glyphicon-shopping-cart"></span>
 							 Meu Pedido 
 							 <span class="badge badge-light">#{carrinhoBean.totalDeItens}</span></p:link></li>
@@ -589,8 +628,8 @@
     <div class="container" id="content" style="margin-bottom:50px;margin-top: -30px;">
     
     	<p:breadCrumb>
-			<p:menuitem value="Home" onclick="start_(this);" url="products.xhtml" />
-		    <p:menuitem value="Categorias" onclick="start_(this);" url="products.xhtml" />
+			<p:menuitem value="Home" onclick="start_(this);" url="home.xhtml" />
+		    <p:menuitem value="Categorias" onclick="start_(this);" url="home.xhtml" />
 		    <p:menuitem value="Meu pedido" url="#" />
 		</p:breadCrumb>
     
@@ -676,14 +715,14 @@
 							
 		<p:panel id="msg1" styleClass="continuar-comprando" style="text-align:center;display:none;"
 			rendered="#{carrinhoBean.totalDeItens ge 1}">
-			<p:link style="color: #bf5306;font-weight: normal;font-size:12px;" href="/webstore/decore/products.xhtml"
+			<p:link style="color: #bf5306;font-weight: normal;font-size:12px;" href="/home.xhtml"
 								onclick="start_(this);">
 								Clique aqui para adicionar mais itens ao seu pedido.</p:link>
 		</p:panel>	
 		
 		<p:panel id="msg2" styleClass="continuar-comprando" style="text-align:center;display:none;"
 			rendered="#{carrinhoBean.totalDeItens eq 0}">
-			<p:link style="color: #bf5306;font-weight: normal;font-size:12px;" href="/webstore/decore/products.xhtml"
+			<p:link style="color: #bf5306;font-weight: normal;font-size:12px;" href="/home.xhtml"
 								onclick="start_(this);">
 								Clique aqui e adicione itens ao seu pedido.</p:link>
 		</p:panel>					
@@ -696,20 +735,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-5">
-                    <a href="javascript:void(0);">
-                    		<img class="logo" src="img/decore-logo.jpg" /></a>
                 </div>
                 <div class="col-sm-2">
                     <h5>Inicio</h5>
                     <ul>
-                        <li><a href="index.xhtml">Home</a></li>
+                        <li><a href="home.xhtml">Home</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
                     <h5>Contato</h5>
                     <ul>
-                        <li><a href="javascript:void(0);">+55 92 99427-9086</a></li>
-                        <li><a href="javascript:void(0);">decoreportas@gmail.com</a></li>
+                        <li><a href="javascript:void(0);">+55 92 98460-1310</a></li>
+                        <li><a href="javascript:void(0);">4coracoesbaby@gmail.com</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
