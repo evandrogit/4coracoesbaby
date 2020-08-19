@@ -9,24 +9,9 @@ INSERT INTO grupos(id,descricao,nome) VALUES (4,'Vendedor','VENDEDOR');
 INSERT INTO usuario_grupo(usuario_id,grupo_id) VALUES (1,1);
 INSERT INTO usuario_grupo(usuario_id,grupo_id) VALUES (2,4);
 
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (1,'Porta','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (3,'Fechadura','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (2,'Aduelas','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (4,'Molduras','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (6,'Espuma','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (8,'Trilho','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (10,'Puxador','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (5,'Dobradiças','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (7,'Kit Padrão','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (11,'Batedor','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (12,'Vista','EMPRESA');
-INSERT INTO categoria_produtos(id,nome,empresa) VALUES (9,'Roudana','EMPRESA');
+INSERT INTO categoria_produtos(id,nome,empresa) VALUES (1,'Body','EMPRESA');
 
-INSERT INTO fornecedores(id,contato,nome,empresa) VALUES (1,'(92) 9-9252-5903','Madeforming','EMPRESA');
-INSERT INTO fornecedores(id,contato,nome,empresa) VALUES (2,'(22) 9-9229-7261','Stam','EMPRESA');
-INSERT INTO fornecedores(id,contato,nome,empresa) VALUES (3,NULL,'Marcelo','EMPRESA');
-INSERT INTO fornecedores(id,contato,nome,empresa) VALUES (4,NULL,'Avelino','EMPRESA');
-
+INSERT INTO fornecedores(id,contato,nome,empresa) VALUES (3,NULL,'Torra Torra','EMPRESA');
 
 INSERT INTO bairros(id,nome,zona) VALUES (1,'Adrianápolis','CENTRO_SUL');
 INSERT INTO bairros(id,nome,zona) VALUES (2,'Aleixo','CENTRO_SUL');
