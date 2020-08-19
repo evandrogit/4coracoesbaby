@@ -687,7 +687,7 @@
 <h:body>
 
 
-<h:form id="form">
+<h:form id="form" onsubmit="return false;">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -860,11 +860,11 @@
 				
 						<p:outputLabel value="CEP" style="font-weight: normal;font-size: 12px;" />
 						<p:inputMask id="cep" style="width:100%;text-align:left;"
-							mask="99999-999" autoClear="false"
+							mask="99999-999" autoClear="false" placeholder="CEP"
 							requiredMessage="CEP deve ser informado." required="true" label="CEP"
 							value="#{carrinhoBean.pedido.cep}">
 							
-							<p:ajax event="blur" onstart="start__();" oncomplete="stop__();" process="@this" update="panel-endereco" listener="#{carrinhoBean.buscaEnderecoPorCEP}" />
+							<p:ajax event="blur" onstart="start__();" oncomplete="stop__();" process="@this" update="panel-endereco panel-endereco_" listener="#{carrinhoBean.buscaEnderecoPorCEP}" />
 						</p:inputMask>
 						
 						<p:message for="cep" styleClass="msg-require" style="margin-top:5px;" />
@@ -898,7 +898,7 @@
 
 				
 				<p:panelGrid columns="2" layout="grid" style="font-size:12px;"
-					styleClass="panelgrid-noborder disabled disabled"
+					styleClass="panelgrid-noborder disabled disabled" id="panel-endereco_"
 					columnClasses="ui-grid-col-8, ui-grid-col-4">
 					
 					<p:panelGrid columns="1" layout="grid"

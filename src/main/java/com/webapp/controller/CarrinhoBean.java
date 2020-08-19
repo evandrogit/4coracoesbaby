@@ -125,6 +125,8 @@ public class CarrinhoBean implements Serializable {
 			pedido.setEndereco(jObj.get("logradouro").toString());
 			pedido.setBairro(jObj.get("bairro").toString());
 			
+			PrimeFaces.current().ajax().update("form");	
+			
 			br.close();
             
         } catch (JSONException e) {
