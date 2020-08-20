@@ -34,6 +34,7 @@ import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.Preference.AutoReturn;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
+import com.mercadopago.resources.datastructures.preference.PaymentMethods;
 import com.webapp.mail.configuration.AppConfig;
 import com.webapp.mail.model.CustomerInfo;
 import com.webapp.mail.model.ProductOrder;
@@ -94,7 +95,9 @@ public class CarrinhoBean implements Serializable {
 	
 	
 	public void inicializar() {
-		if (FacesUtil.isNotPostback()) {			
+		if (FacesUtil.isNotPostback()) {	
+			
+			System.out.println("Teste");
 		}
 	}
 	
@@ -338,6 +341,12 @@ public class CarrinhoBean implements Serializable {
 
 		preference.setBackUrls(backUrls);
 		preference.setAutoReturn(AutoReturn.approved);
+		
+
+		PaymentMethods paymentMethods = new PaymentMethods();
+		paymentMethods.setInstallments(3);
+
+		preference.setPaymentMethods(paymentMethods);
 		
 		
 		com.mercadopago.resources.datastructures.preference.Payer payer = new com.mercadopago.resources.datastructures.preference.Payer()
