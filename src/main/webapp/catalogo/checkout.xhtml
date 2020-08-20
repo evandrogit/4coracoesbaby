@@ -966,7 +966,7 @@
 				
 					<p:panel>						
 						<p:panel style="margin-top: 8px;float: left;">
-							<p:selectBooleanCheckbox id="check-box" >
+							<p:selectBooleanCheckbox id="check-box" label="Termo e condições" required="true" requiredMessage="Marque essa opção para continuar">
 								<p:ajax event="change"
 									listener="#{carrinhoBean.aceite}"
 									process="@this" update="btn-pagamento" />
@@ -976,7 +976,7 @@
 						</p:panel>
 						
 						<p:commandButton value="Continuar com o pagamento" id="btn-pagamento"
-									disabled="#{carrinhoBean.totalDeItens eq 0 and carrinhoBean.aceite}" styleClass="btn-pagamento"
+									disabled="#{carrinhoBean.totalDeItens eq 0 or not carrinhoBean.aceite}" styleClass="btn-pagamento"
 									update="form" onstart="start__();" onsuccess="stop__();"
 									process="@this form" action="#{carrinhoBean.realizarPagamento}" />	
 															
@@ -1054,7 +1054,6 @@
 		<div class="sobre-preco">
 			<span style="font-size: 10px;color: #000;font-weight: normal;">Preços, promoções e condições de pagamento são válidos apenas para compras pela internet, 
 	                		não refletindo necessariamente as mesmas condições utilizadas nas lojas físicas. 
-	                		Em caso de divergência de preços, será válido o do Carrinho de Compras. 
 	                		Venda sujeita à disponibilidade de estoque. 
 	                		As imagens dos produtos são meramente ilustrativas.
 	                	</span>
