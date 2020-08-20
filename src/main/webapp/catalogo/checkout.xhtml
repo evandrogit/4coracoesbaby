@@ -631,6 +631,8 @@
 		}
 		#myFooter .footer-copyright p {
 		    font-size: 12px;
+		    width: 93%;
+   			margin: auto;
 		}
 		body .ui-datatable .ui-datatable-data > tr td:nth-child(1) {
 		    padding: 3px;
@@ -963,26 +965,18 @@
 				<p:panelGrid columns="1" layout="grid" style="font-size:12px;margin-top:5px;"
 					styleClass="panelgrid-noborder disabled disabled"
 					columnClasses="ui-grid-col-12">
-				
-					<p:panel>						
-						<p:panel style="margin-top: 8px;float: left;">
-							<p:selectBooleanCheckbox id="check-box" label="Termo e condições" required="true" requiredMessage="Marque essa opção para continuar">
-								<p:ajax event="change"
-									listener="#{carrinhoBean.aceite}"
-									process="@this" update="btn-pagamento" />
-							</p:selectBooleanCheckbox>
-							
-							<span>Eu concordo com os <a style="text-decoration: none;" href="docs/termos-condicoes.pdf">termos e condições</a>.</span>
-						</p:panel>
 						
-						<p:commandButton value="Continuar com o pagamento" id="btn-pagamento"
-									disabled="#{carrinhoBean.totalDeItens eq 0 or not carrinhoBean.aceite}" styleClass="btn-pagamento"
-									update="form" onstart="start__();" onsuccess="stop__();"
-									process="@this form" action="#{carrinhoBean.realizarPagamento}" />	
-															
-						</p:panel>
-						
-						<p:link styleClass="voltar" style="margin-top:10px;" onclick="start_(this);" href="carrinho.xhtml">Voltar ao pedido</p:link>																		
+					<p:panel style="margin-top: 8px;float: left;">							
+						<span style="font-weight: normal;">Ao clicar em Concordar e continuar com o pagamento, você aceita os 
+							<a style="text-decoration: none;" href="docs/termos-condicoes.pdf">termos e condições</a> da 4 CORACOES BABY.</span>
+					</p:panel>
+					
+					<p:commandButton value="Concordar e continuar com o pagamento" id="btn-pagamento"
+								styleClass="btn-pagamento" disabled="#{carrinhoBean.totalDeItens eq 0}" 
+								update="form" onstart="start__();" onsuccess="stop__();"
+								process="@this form" action="#{carrinhoBean.realizarPagamento}" />	
+					
+					<p:link styleClass="voltar" style="margin-top:10px;" onclick="start_(this);" href="carrinho.xhtml">Voltar ao pedido</p:link>																		
 			
 				</p:panelGrid>
 			
@@ -1092,9 +1086,10 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright">
-            <p>Copyright © 2020 4 CORACOES BABY. CNPJ 38.087.957/0001-90. Todos os direitos
-					reservados. End.: Rua Nova, N°67 CEP: 69078-090 Bairro Japiim - Manaus / AM</p>
+        <div class="footer-copyright"> 
+            <p>4 CORACOES BABY | CNPJ 38.087.957/0001-90 | End.: Travessa Francisco Duarte N°67 CEP: 69078-090 Bairro Japiim - Manaus / AM |
+            	SAC: faleconosco@4coracoesbaby.com | (92) 98460-1310 envio de mensagens via WhatsApp | 
+            	4 CORACOES BABY © 2020 Todos os direitos reservados.</p>
         </div>
     </footer>
 	

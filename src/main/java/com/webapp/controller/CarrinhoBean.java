@@ -90,8 +90,7 @@ public class CarrinhoBean implements Serializable {
 	private static String TEST_ACCESS_TOKEN = "TEST-1852237905175376-080820-c7142e78a910796fbc26999ef2fa808d-277250128";
 	
 	private Preference preference;
-	
-	private boolean aceite;
+
 	
 	
 	public void inicializar() {
@@ -315,7 +314,7 @@ public class CarrinhoBean implements Serializable {
 	
 	
 	public void realizarPagamento() throws IOException, MPException {
-		
+			
 		// Configura credenciais
 		MercadoPago.SDK.setAccessToken(TEST_ACCESS_TOKEN);	
 
@@ -537,14 +536,6 @@ public class CarrinhoBean implements Serializable {
 
 	public Preference getPreference() {
 		return preference;
-	}
-
-	public boolean isAceite() {
-		return aceite;
-	}
-
-	public void setAceite(boolean aceite) {
-		this.aceite = aceite;
 	}
 
 }
