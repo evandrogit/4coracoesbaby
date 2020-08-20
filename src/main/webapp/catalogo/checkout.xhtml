@@ -763,8 +763,12 @@
 		
 		<p:messages id="msg" closable="true" life="2000" showSummary="false"
 			showDetail="true" style="font-size: 12px;" rendered="false" />
-		
-		<p:accordionPanel activeIndex="null" styleClass="resumo-pedido" style="margin-top:12px;">
+			
+		<p:panel styleClass="resumo-pedido" style="text-align: center;padding-top: 10px;padding-bottom: 5px;margin-top: 8px;border: 1px solid #b5b5b5;">
+			<p:outputLabel style="color: #6b6b6b;" value="Total geral: R$ #{carrinhoBean.totalGeralEmString}" />
+		</p:panel>
+			
+		<p:accordionPanel activeIndex="null" styleClass="resumo-pedido" style="margin-top:9px;">
 			
 			<p:tab title="Resumo do Pedido - Total geral: R$ #{carrinhoBean.totalGeralEmString}">
 			   	
