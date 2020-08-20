@@ -29,8 +29,15 @@
 	
 	<style>
 	@media ( min-width :220px) {
+			.sobre-preco {
+				width:100%;
+			}
+			.banner {
+				width:100%;
+			}
 			#myFooter {
     			background-color: #f2bacc !important;
+    			padding-top: 0px;
     		}
     		#myFooter h5 {
 			    color: #676767;
@@ -93,7 +100,7 @@
 			width:225px;
 		}
 		#myFooter .row {
-		    margin-bottom: 25px;
+		    margin-bottom: 0px;
 		}
 		footer {
    			padding: 0px 0;
@@ -501,6 +508,13 @@
 		        display: block;
 		    }
 	}
+	
+	@media ( min-width :468px) {
+		.banner {
+			width:auto;
+		}
+	}
+		
 	@media ( min-width :640px) {
 		.logotipo {
 			margin-left: 14px;
@@ -513,7 +527,7 @@
 		    margin-left: 0px;
 		}
 		#myFooter .footer-copyright p {
-		    font-size: 14px;
+		    font-size: 12px;
 		}
 		body .ui-datatable .ui-datatable-data > tr td:nth-child(1) {
 		    padding: 3px;
@@ -574,14 +588,20 @@
 			width:300px;
 		}
 		#myFooter .row {
-		    margin-bottom: 60px;
+		    margin-bottom: 15px;
 		}
 		#myFooter .footer-copyright p {
-		    font-size: 14px;
+		    font-size: 12px;
 		}
 		.container {
 		    padding-right: 0px;
 		    padding-left: 0px;
+		}
+	}
+	@media(min-width :860px) {
+		.sobre-preco {
+			width:60%;
+			margin:auto;
 		}
 	}
 	</style>
@@ -730,6 +750,21 @@
 		
     </div>
 </h:form>    
+
+	<div style="text-align:center;margin-bottom:5px;">
+		<img src="https://imgmp.mlstatic.com/org-img/MLB/MP/BANNERS/tipo2_468X60.jpg?v=1" class="banner"
+			alt="Mercado Pago - Meios de pagamento" title="Mercado Pago - Meios de pagamento"/>
+		<br/>
+		<a href="https://www.mercadopago.com.br/ajuda/Custos-de-parcelamento_322" style="text-decoration: none;font-size: 11px;">Veja os juros de parcelamento.</a>
+		<div class="sobre-preco">
+			<span style="font-size: 10px;color: #000;font-weight: normal;">Preços, promoções e condições de pagamento são válidos apenas para compras pela internet, 
+	                		não refletindo necessariamente as mesmas condições utilizadas nas lojas físicas. 
+	                		Em caso de divergência de preços, será válido o do Carrinho de Compras. 
+	                		Venda sujeita à disponibilidade de estoque. 
+	                		As imagens dos produtos são meramente ilustrativas.
+	                	</span>
+       </div>
+	</div>
         
 	<footer id="myFooter">
         <div class="container">
@@ -737,9 +772,10 @@
                 <div class="col-sm-5">
                 </div>
                 <div class="col-sm-2">
-                    <h5>Inicio</h5>
+                    <h5>Links</h5>
                     <ul>
                         <li><a href="home.xhtml">Home</a></li>
+                        <li><a href="docs/politica-privacidade.pdf">Política de Privacidade</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
@@ -762,8 +798,8 @@
             </div>
         </div>
         <div class="footer-copyright">
-            <p>Copyright © 4 Corações Baby. Todos os direitos
-					reservados.</p>
+            <p>Copyright © 2020 4 CORACOES BABY. CNPJ 38.087.957/0001-90. Todos os direitos
+					reservados. End.: Rua Nova, N°67 CEP: 69078-090 Bairro Japiim - Manaus / AM</p>
         </div>
     </footer>
 	

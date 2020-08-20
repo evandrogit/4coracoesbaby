@@ -91,6 +91,8 @@ public class CarrinhoBean implements Serializable {
 	
 	private Preference preference;
 	
+	private boolean aceite;
+	
 	
 	public void inicializar() {
 		if (FacesUtil.isNotPostback()) {			
@@ -535,6 +537,14 @@ public class CarrinhoBean implements Serializable {
 
 	public Preference getPreference() {
 		return preference;
+	}
+
+	public boolean isAceite() {
+		return aceite;
+	}
+
+	public void setAceite(boolean aceite) {
+		this.aceite = aceite;
 	}
 
 }
