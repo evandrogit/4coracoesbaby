@@ -96,6 +96,26 @@ public class CarrinhoBean implements Serializable {
 		if (FacesUtil.isNotPostback()) {			
 		}
 	}
+	
+	public void success() throws IOException {
+		pedido = new Pedido();		
+		listaDeProdutos = new ArrayList<Produto>();		
+		atualizarCarrinho();
+		
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/home.xhtml");
+	}
+	
+	public void pending() throws IOException {
+		pedido = new Pedido();		
+		listaDeProdutos = new ArrayList<Produto>();		
+		atualizarCarrinho();
+		
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/home.xhtml");
+	}
+	
+	public void failure() throws IOException {		
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/pagamento.xhtml");
+	}
 		
 	public List<Bairro> completeText(String query) {
 		
@@ -134,8 +154,6 @@ public class CarrinhoBean implements Serializable {
 			pedido.setBairro("");
             //throw new RuntimeException(e);
         }
-		
-		System.out.println();
 	}
 	
 	
@@ -313,9 +331,9 @@ public class CarrinhoBean implements Serializable {
 		
 		
 		BackUrls backUrls = new BackUrls(
-                "https://quatrocoracoesbaby.herokuapp.com/catalogo/success",
-                "http://quatrocoracoesbaby.herokuapp.com/pending",
-                "http://quatrocoracoesbaby.herokuapp.com/failure");
+                "https://quatrocoracoesbaby.herokuapp.com/catalogo/success.xhtml",
+                "http://quatrocoracoesbaby.herokuapp.com/catalogo/pending.xhtml",
+                "http://quatrocoracoesbaby.herokuapp.com/catalogo/failure.xhtml");
 
 		preference.setBackUrls(backUrls);
 		preference.setAutoReturn(AutoReturn.approved);
