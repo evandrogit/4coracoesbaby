@@ -42,7 +42,7 @@ public class Pedidos implements Serializable {
 		
 		try {
 			return this.manager.createQuery("from Pedido p where p.preferenceId = :preferenceId", Pedido.class)
-					.setParameter("porPreferenceId", porPreferenceId).getSingleResult();		
+					.setParameter("preferenceId", porPreferenceId).getSingleResult();		
 		} catch(NoResultException e) {			
 		}
 		
