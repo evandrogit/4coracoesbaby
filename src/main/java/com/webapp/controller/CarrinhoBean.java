@@ -213,6 +213,7 @@ public class CarrinhoBean implements Serializable {
 		
 		if(this.totalDeItens.intValue() == totalDeItens.intValue() && this.totalGeral.doubleValue() == totalGeral.doubleValue()) {
 			//sendMailAndSavePedido();
+			System.out.println("preference.getId() : " + preference.getId());
 			PrimeFaces.current().executeScript("start__();");
 			
 		} else {
