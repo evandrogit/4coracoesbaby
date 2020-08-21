@@ -65,7 +65,9 @@ public class CarrinhoBean implements Serializable {
 	
 	private Long totalDeItens = 0L;
 	
-	private Double totalGeral = 0D;
+	private BigDecimal totalGeral = BigDecimal.ZERO;
+	
+	private Double totalGeralTemp = 0D;
 	
 	@Inject
 	private Pedido pedido;
@@ -262,14 +264,16 @@ public class CarrinhoBean implements Serializable {
 		PrimeFaces.current().ajax().update("form");	
 		
 		*/
-		
+		BigDecimal totalGeral = BigDecimal.ZERO;
 		
 		Long totalDeItens = 0L;
-		Double totalGeral = 0D;
+		Double totalGeralTemp = 0D;
 		for (Item item : preference.getItems()) {	
 			totalDeItens += item.getQuantity().intValue();
-			totalGeral += item.getUnitPrice().doubleValue() * item.getQuantity().intValue();
+			totalGeralTemp += item.getUnitPrice().doubleValue() * item.getQuantity().intValue();
 		}
+		
+		totalGeral = new BigDecimal(totalGeralTemp).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		
 		System.out.println(this.totalDeItens.intValue() + " - " + totalDeItens.intValue());
 		
@@ -329,7 +333,7 @@ public class CarrinhoBean implements Serializable {
 		
 		pedido.setDataPedido(new Date());
 		pedido.setQuantidadeItens(totalDeItens);
-		pedido.setValorTotal(new BigDecimal(totalGeral));
+		pedido.setValorTotal(totalGeral);
 		
 		pedido.setEmail(pedido.getEmail().toLowerCase().trim());
 		pedido.setNome(convertToTitleCaseIteratingChars(pedido.getNome().trim()));
@@ -474,17 +478,19 @@ public class CarrinhoBean implements Serializable {
 		List<Produto> produtos = new ArrayList<>();	
 		
 		totalDeItens = 0L;
-		totalGeral = 0D;
+		totalGeralTemp = 0D;
 		for (Produto produtoTemp : listaDeProdutos) {
 	
 			if(produtoTemp.getQuantidadePedido() == null || produtoTemp.getQuantidadePedido().intValue() == 0 || produtoTemp.getPrecoDeVenda().doubleValue() == 0) {
 				produtos.add(produtoTemp);
 			} else {
 				produtoTemp.setDescricao(convertToTitleCaseIteratingChars(produtoTemp.getDescricao()));
-				totalGeral += produtoTemp.getPrecoDeVenda().doubleValue() * produtoTemp.getQuantidadePedido().intValue();
+				totalGeralTemp += produtoTemp.getPrecoDeVenda().doubleValue() * produtoTemp.getQuantidadePedido().intValue();
 				totalDeItens += produtoTemp.getQuantidadePedido().intValue();
 			}
 		}
+		
+		totalGeral = new BigDecimal(totalGeralTemp).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		
 		for (Produto produto : produtos) {
 			listaDeProdutos.remove(produto);
@@ -521,12 +527,14 @@ public class CarrinhoBean implements Serializable {
 			atualizarCarrinho();
 			
 			totalDeItens = 0L;
-			totalGeral = 0D;
+			totalGeralTemp = 0D;
 			for (Produto produtoTemp : listaDeProdutos) {
 				produtoTemp.setDescricao(convertToTitleCaseIteratingChars(produtoTemp.getDescricao()));
-				totalGeral += produtoTemp.getPrecoDeVenda().doubleValue() * produtoTemp.getQuantidadePedido().intValue();
+				totalGeralTemp += produtoTemp.getPrecoDeVenda().doubleValue() * produtoTemp.getQuantidadePedido().intValue();
 				totalDeItens += produtoTemp.getQuantidadePedido().intValue();
 			}
+			
+			totalGeral = new BigDecimal(totalGeralTemp).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			
 			totalGeralEmString = nf.format(totalGeral.doubleValue());
 			
@@ -540,12 +548,14 @@ public class CarrinhoBean implements Serializable {
 		listaDeProdutos.remove(produtoTemp);
 		
 		totalDeItens = 0L;
-		totalGeral = 0D;
+		totalGeralTemp = 0D;
 		for (Produto produtoTemp_ : listaDeProdutos) {
 			produtoTemp_.setDescricao(convertToTitleCaseIteratingChars(produtoTemp_.getDescricao()));
-			totalGeral += produtoTemp_.getPrecoDeVenda().doubleValue() * produtoTemp_.getQuantidadePedido().intValue();
+			totalGeralTemp += produtoTemp_.getPrecoDeVenda().doubleValue() * produtoTemp_.getQuantidadePedido().intValue();
 			totalDeItens += produtoTemp_.getQuantidadePedido().intValue();
 		}
+		
+		totalGeral = new BigDecimal(totalGeralTemp).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		
 		totalGeralEmString = nf.format(totalGeral.doubleValue());
 		
@@ -603,7 +613,7 @@ public class CarrinhoBean implements Serializable {
 	
 	
 	public Double getTotalGeral() {
-		return totalGeral;
+		return totalGeral.doubleValue();
 	}
 
 	public String getPaymentMethodId() {
