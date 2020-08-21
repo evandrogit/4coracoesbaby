@@ -473,7 +473,7 @@ public class CarrinhoBean implements Serializable {
 		totalGeral = 0D;
 		for (Produto produtoTemp : listaDeProdutos) {
 	
-			if(produtoTemp.getQuantidadePedido() == null || produtoTemp.getQuantidadePedido().intValue() == 0 || produtoTemp.getTotalVendas().doubleValue() == 0) {
+			if(produtoTemp.getQuantidadePedido() == null || produtoTemp.getQuantidadePedido().intValue() == 0 || produtoTemp.getPrecoDeVenda().doubleValue() == 0) {
 				produtos.add(produtoTemp);
 			} else {
 				produtoTemp.setDescricao(convertToTitleCaseIteratingChars(produtoTemp.getDescricao()));
