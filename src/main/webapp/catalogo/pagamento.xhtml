@@ -845,7 +845,7 @@
 					<p:outputLabel value="Pagamento" />
 					<p:outputLabel value="Todas as transações são seguras e criptografadas." style="font-size: 11px;font-weight: normal;margin-top: -12px;float: left;" />	
 				
-				
+					<a href="#{carrinhoBean.preference.initPoint}">Pagar com Mercado Pago</a>
 					
 				</p:panelGrid>
 				
@@ -928,12 +928,11 @@
 						
     </div>
     
-<form method="POST">
+
   <script
 	   src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
 	   data-preference-id="#{carrinhoBean.preference.id}">
 	 </script>
-</form>
 		
 </h:form> 		
 
