@@ -118,46 +118,55 @@ public class CarrinhoBean implements Serializable {
 			Payment payment = Payment.findById(id);
 			System.out.println("Payment Status: " + payment.getStatus());
 			
-			merchantOrder = MerchantOrder.findById(String.valueOf(payment.getOrder().getId()));
+			try {
+				merchantOrder = MerchantOrder.findById(String.valueOf(payment.getOrder().getId()));
+			} catch(NullPointerException e) {			
+			}
 		}
 		
 		if(topic.equals("merchant_order")) {
 			merchantOrder = MerchantOrder.findById(id);
 		}	
 		
-		System.out.println("MerchantOrder Status: " + merchantOrder.getStatus());
-		
-		double paid_amount = 0;
-	    for (MerchantOrderPayment payment : merchantOrder.getPayments()) {   
-	        if (payment.getStatus().equals("approved")) {
-	            paid_amount += payment.getTransactionAmount();
-	        }
-	    }
+		if(merchantOrder != null) {
+			
+			System.out.println("MerchantOrder Status: " + merchantOrder.getStatus());
+			
+			double paid_amount = 0;
+		    for (MerchantOrderPayment payment : merchantOrder.getPayments()) {   
+		        if (payment.getStatus().equals("approved")) {
+		            paid_amount += payment.getTransactionAmount();
+		        }
+		    }
+		    
+		    String observacao = "";
+	
+		    // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
+		    if(paid_amount >= merchantOrder.getTotalAmount()){
+		        if (merchantOrder.getShipments().size() > 0) { // The merchant_order has shipments
+		            if(merchantOrder.getShipments().get(0).getStatus().equals("ready_to_ship")) {
+		            	observacao = "Totally paid. Print the label and release your item.";
+		            }
+		        } else { // The merchant_order don't has any shipments
+		        	observacao = "Totally paid. Release your item.";
+		        }
+		    } else {
+		    	observacao = "Not paid yet. Do not release your item.";
+		    }
 	    
-	    String observacao = "";
-
-	    // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
-	    if(paid_amount >= merchantOrder.getTotalAmount()){
-	        if (merchantOrder.getShipments().size() > 0) { // The merchant_order has shipments
-	            if(merchantOrder.getShipments().get(0).getStatus().equals("ready_to_ship")) {
-	            	observacao = "Totally paid. Print the label and release your item.";
-	            }
-	        } else { // The merchant_order don't has any shipments
-	        	observacao = "Totally paid. Release your item.";
-	        }
-	    } else {
-	    	observacao = "Not paid yet. Do not release your item.";
-	    }
 	    
 	    
-	    Pedido pedido = pedidos.porPreferenceId(merchantOrder.getPreferenceId());
-	    System.out.println(merchantOrder.getPreferenceId());
-	    
-	    if(pedido != null) {
-	    	pedido.setMerchantOrderId(merchantOrder.getId());
-	    	pedido.setStatus(merchantOrder.getStatus());
-	    	pedido.setObservacao(observacao);
-		    pedidos.save(pedido);
+		    Pedido pedido = pedidos.porPreferenceId(merchantOrder.getPreferenceId());
+		    System.out.println(merchantOrder.getPreferenceId());
+		    
+		    if(pedido != null) {
+		    	pedido.setTopic(topic);
+		    	pedido.setTopicId(id);
+		    	pedido.setMerchantOrderId(merchantOrder.getId());
+		    	pedido.setStatus(merchantOrder.getStatus());
+		    	pedido.setObservacao(observacao);
+			    pedidos.save(pedido);
+		    }
 	    }
 	 
 	}	

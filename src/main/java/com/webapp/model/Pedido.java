@@ -37,6 +37,12 @@ public class Pedido implements Serializable {
 	@Column(nullable = true)
 	private String merchantOrderId;
 	
+	@Column(nullable = true)
+	private String topic;
+	
+	@Column(nullable = true)
+	private String topicId;
+	
 	@NotNull
 	@Column(nullable = false)
 	private Long quantidadeItens = 0L;
@@ -149,6 +155,22 @@ public class Pedido implements Serializable {
 
 	public void setMerchantOrderId(String merchantOrderId) {
 		this.merchantOrderId = merchantOrderId;
+	}
+
+	public String getTopic() {
+		return topic;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
 	}
 
 	public Long getQuantidadeItens() {
