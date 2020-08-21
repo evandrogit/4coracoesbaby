@@ -151,6 +151,8 @@ public class CarrinhoBean implements Serializable {
 	    
 	    
 	    Pedido pedido = pedidos.porPreferenceId(merchantOrder.getPreferenceId());
+	    System.out.println(merchantOrder.getPreferenceId());
+	    
 	    if(pedido != null) {
 	    	pedido.setMerchantOrderId(merchantOrder.getId());
 	    	pedido.setStatus(merchantOrder.getStatus());

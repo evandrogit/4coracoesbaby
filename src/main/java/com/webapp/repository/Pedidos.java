@@ -41,7 +41,8 @@ public class Pedidos implements Serializable {
 	public Pedido porPreferenceId(String porPreferenceId) {
 		
 		try {
-			return this.manager.createQuery("from Pedido p where p.preferenceId = :preferenceId", Pedido.class).getSingleResult();		
+			return this.manager.createQuery("from Pedido p where p.preferenceId = :preferenceId", Pedido.class)
+					.setParameter("porPreferenceId", porPreferenceId).getSingleResult();		
 		} catch(NoResultException e) {			
 		}
 		
