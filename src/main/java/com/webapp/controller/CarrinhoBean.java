@@ -340,6 +340,7 @@ public class CarrinhoBean implements Serializable {
 
 		preference.setBackUrls(backUrls);
 		
+		
 		preference.setAutoReturn(AutoReturn.approved);
 		
 
