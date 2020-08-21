@@ -46,7 +46,7 @@ public class Pedido implements Serializable {
 	@Digits(integer = 10 /* precision */, fraction = 4 /* scale */)
 	private BigDecimal valorTotal = BigDecimal.ZERO;
 	
-	@Column(nullable = false, length = 20)
+	@Column(nullable = true, length = 60)
 	private String cupom;
 	
 	@Column
