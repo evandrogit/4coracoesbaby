@@ -213,8 +213,7 @@ public class CarrinhoBean implements Serializable {
 		
 		if(this.totalDeItens.intValue() == totalDeItens.intValue() && this.totalGeral.doubleValue() == totalGeral.doubleValue()) {
 			//sendMailAndSavePedido();
-			System.out.println("preference.getId() : " + preference.getId());
-			PrimeFaces.current().executeScript("start__();");
+			PrimeFaces.current().executeScript("start__();"); 
 			
 		} else {
 			
@@ -333,15 +332,15 @@ public class CarrinhoBean implements Serializable {
 			preference.appendItem(item);			
 		}
 		
-		/*
+		
 		BackUrls backUrls = new BackUrls(
                 "https://quatrocoracoesbaby.herokuapp.com/catalogo/success.xhtml",
                 "https://quatrocoracoesbaby.herokuapp.com/catalogo/pending.xhtml",
                 "https://quatrocoracoesbaby.herokuapp.com/catalogo/failure.xhtml");
 
 		preference.setBackUrls(backUrls);
-		*/
-		//preference.setAutoReturn(AutoReturn.approved);
+		
+		preference.setAutoReturn(AutoReturn.approved);
 		
 
 		PaymentMethods paymentMethods = new PaymentMethods();
