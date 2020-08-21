@@ -214,11 +214,13 @@ function getInstallments(){
 
 function doPay_(){ 
 
-	var $button = document.querySelector('.mercadopago-button');
+	//var $button = document.querySelector('.mercadopago-button');
+	var $anchor = document.querySelector('.mercadopago-link');
 	
 	stop__();
 
-	$button.click();
+	$anchor.click();
+	//$button.click();
 	
 	return false;
 
