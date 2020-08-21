@@ -284,7 +284,7 @@ public class CarrinhoBean implements Serializable {
 			// Cria um objeto de preferência
 			preference = new Preference();
 			
-			pedido = new Pedido();
+			pedido.setPreferenceId("");
 
 			// Cria um itens na preferência
 			for (Produto produto : listaDeProdutos) {
@@ -395,7 +395,7 @@ public class CarrinhoBean implements Serializable {
 		// Cria um objeto de preferência
 		preference = new Preference();
 		
-		pedido = new Pedido();
+		pedido.setPreferenceId("");
 
 		// Cria um itens na preferência
 		for (Produto produto : listaDeProdutos) {
@@ -473,7 +473,7 @@ public class CarrinhoBean implements Serializable {
 		totalGeral = 0D;
 		for (Produto produtoTemp : listaDeProdutos) {
 	
-			if(produtoTemp.getQuantidadePedido() == null || produtoTemp.getQuantidadePedido().intValue() == 0) {
+			if(produtoTemp.getQuantidadePedido() == null || produtoTemp.getQuantidadePedido().intValue() == 0 || produtoTemp.getTotalVendas().doubleValue() == 0) {
 				produtos.add(produtoTemp);
 			} else {
 				produtoTemp.setDescricao(convertToTitleCaseIteratingChars(produtoTemp.getDescricao()));
@@ -495,32 +495,40 @@ public class CarrinhoBean implements Serializable {
 		}
 	}
 	
-	public void adicionarNoCarrinho(Produto produto) throws IOException {
-		
-		if(!listaDeProdutos.contains(produto)) {
-			produto.setQuantidadePedido(produto.getQuantidadePedido());
-			listaDeProdutos.add(produto);
-		} else {
-			Produto produtoTemp = listaDeProdutos.get(listaDeProdutos.indexOf(produto));
-			produtoTemp.setQuantidadePedido(produtoTemp.getQuantidadePedido() + produto.getQuantidadePedido());
-		}
+	public void adicionarNoCarrinho(Produto produto) {
 		
 		try {
-			Thread.sleep(2000);
-			FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/carrinho.xhtml");
+		
+			if(!listaDeProdutos.contains(produto)) {
+				produto.setQuantidadePedido(produto.getQuantidadePedido());
+				listaDeProdutos.add(produto);
+			} else {
+				Produto produtoTemp = listaDeProdutos.get(listaDeProdutos.indexOf(produto));
+				produtoTemp.setQuantidadePedido(produtoTemp.getQuantidadePedido() + produto.getQuantidadePedido());
+			}
 			
-		} catch (InterruptedException e) {
+			try {
+				Thread.sleep(2000);
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/carrinho.xhtml");
+				
+			} catch (InterruptedException e) {
+			}
+			
+			atualizarCarrinho();
+			
+			totalDeItens = 0L;
+			totalGeral = 0D;
+			for (Produto produtoTemp : listaDeProdutos) {
+				produtoTemp.setDescricao(convertToTitleCaseIteratingChars(produtoTemp.getDescricao()));
+				totalGeral += produtoTemp.getPrecoDeVenda().doubleValue() * produtoTemp.getQuantidadePedido().intValue();
+				totalDeItens += produtoTemp.getQuantidadePedido().intValue();
+			}
+			
+			totalGeralEmString = nf.format(totalGeral.doubleValue());
+			
+		} catch(IOException e) {
+			
 		}
-		
-		totalDeItens = 0L;
-		totalGeral = 0D;
-		for (Produto produtoTemp : listaDeProdutos) {
-			produtoTemp.setDescricao(convertToTitleCaseIteratingChars(produtoTemp.getDescricao()));
-			totalGeral += produtoTemp.getPrecoDeVenda().doubleValue() * produtoTemp.getQuantidadePedido().intValue();
-			totalDeItens += produtoTemp.getQuantidadePedido().intValue();
-		}
-		
-		totalGeralEmString = nf.format(totalGeral.doubleValue());
 	}
 	
 	public void removerDoCarrinho(Produto produto) throws IOException {
