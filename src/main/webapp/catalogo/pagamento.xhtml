@@ -844,18 +844,11 @@
 				
 					<p:outputLabel value="Pagamento" />
 					<p:outputLabel value="Todas as transações são seguras e criptografadas." style="font-size: 11px;font-weight: normal;margin-top: -12px;float: left;" />					
-				</p:panelGrid>
-				
-				
-				
+				</p:panelGrid>			
 				
 				<p:panelGrid columns="1" layout="grid" style="font-size:12px;margin-top:12px;"
 					styleClass="panelgrid-noborder disabled disabled"
-					columnClasses="ui-grid-col-12">
-				
-					<p:panel rendered="false">
-						<p:link styleClass="voltar" style="margin-top:10px;" onclick="start_(this);" href="checkout.xhtml">Voltar ao checkout</p:link>	 
-					</p:panel>				
+					columnClasses="ui-grid-col-12">						
 					 
 					 <p:panel style="text-align: center;" styleClass="panel-mp">						
 						<img class="ssl" style="margin-top: -10px;" src="img/mercado-pago_.png" />
@@ -864,7 +857,11 @@
 					 <p:panel style="text-align: center;" styleClass="panel-mp">						
 						<p:commandButton value="Pagar" action="#{carrinhoBean.pagarComMercadoPago}" onclick="pagar();"
 									disabled="#{carrinhoBean.totalDeItens eq 0}" style="background: #27ae60f5;padding: 4px 4px;font-weight: normal;font-size: 14px;" />
-					 </p:panel>			 					 
+					 </p:panel>	
+					 
+					 <p:panel>
+						<p:link styleClass="voltar" style="margin-top:10px;" onclick="start_(this);" href="checkout.xhtml">Voltar ao checkout</p:link>	 
+					</p:panel>			 					 
 			
 				</p:panelGrid>
 			

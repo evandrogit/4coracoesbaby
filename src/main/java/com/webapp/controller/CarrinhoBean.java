@@ -34,6 +34,7 @@ import com.mercadopago.resources.MerchantOrder;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.Preference.AutoReturn;
+import com.mercadopago.resources.datastructures.merchantorder.MerchantOrderPayment;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
 import com.mercadopago.resources.datastructures.preference.PaymentMethods;
@@ -114,19 +115,41 @@ public class CarrinhoBean implements Serializable {
 		
 		System.out.println("ID: " + id);
 		
+		MerchantOrder merchantOrder = null;
+		
 		if(topic.equals("payment")) {
 			Payment payment = Payment.findById(id);
 			System.out.println("Payment Status: " + payment.getStatus());
-		}
-				
-		if(topic.equals("chargebacks")) {
 			
+			merchantOrder = MerchantOrder.findById(String.valueOf(payment.getOrder().getId()));
 		}
 		
 		if(topic.equals("merchant_order")) {
-			MerchantOrder merchantOrder = MerchantOrder.findById(id);
-			System.out.println("MerchantOrder Status: " + merchantOrder.getStatus());
-		}				
+			merchantOrder = MerchantOrder.findById(id);
+		}	
+		
+		System.out.println("MerchantOrder Status: " + merchantOrder.getStatus());
+		
+		double paid_amount = 0;
+	    for (MerchantOrderPayment payment : merchantOrder.getPayments()) {   
+	        if (payment.getStatus().equals("approved")) {
+	            paid_amount += payment.getTransactionAmount();
+	        }
+	    }
+
+	    // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
+	    if(paid_amount >= merchantOrder.getTotalAmount()){
+	        if (merchantOrder.getShipments().size() > 0) { // The merchant_order has shipments
+	            if(merchantOrder.getShipments().get(0).getStatus().equals("ready_to_ship")) {
+	            	System.out.println("Totally paid. Print the label and release your item.");
+	            }
+	        } else { // The merchant_order don't has any shipments
+	        	System.out.println("Totally paid. Release your item.");
+	        }
+	    } else {
+	        System.out.println("Not paid yet. Do not release your item.");
+	    }
+
 		
 	}	
 	
