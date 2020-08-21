@@ -79,7 +79,7 @@ public class Pedido implements Serializable {
 	private String nome;
 	
 	@NotBlank
-	@Column(nullable = false, length = 12)
+	@Column(nullable = false, length = 16)
 	private String telefone;
 	
 	@NotBlank
