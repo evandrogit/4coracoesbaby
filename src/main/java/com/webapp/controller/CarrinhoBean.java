@@ -30,6 +30,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.MerchantOrder;
+import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.Preference.AutoReturn;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
@@ -91,6 +93,10 @@ public class CarrinhoBean implements Serializable {
 	private static String TEST_ACCESS_TOKEN = "TEST-1852237905175376-080820-c7142e78a910796fbc26999ef2fa808d-277250128";
 	
 	private Preference preference;
+	
+	private String topic;
+	
+	private String id;
 
 	
 	
@@ -99,6 +105,31 @@ public class CarrinhoBean implements Serializable {
 			//System.out.println("*** Teste ***");
 		}
 	}
+	
+		
+	public void updateStatus() throws MPException {
+		
+		// Configura credenciais
+		MercadoPago.SDK.setAccessToken(TEST_ACCESS_TOKEN);
+		
+		System.out.println("ID: " + id);
+		
+		if(topic.equals("payment")) {
+			Payment payment = Payment.findById(id);
+			System.out.println("Payment Status: " + payment.getStatus());
+		}
+				
+		if(topic.equals("chargebacks")) {
+			
+		}
+		
+		if(topic.equals("merchant_order")) {
+			MerchantOrder merchantOrder = MerchantOrder.findById(id);
+			System.out.println("MerchantOrder Status: " + merchantOrder.getStatus());
+		}				
+		
+	}	
+	
 	
 	public void success() throws IOException {
 		pedido = new Pedido();		
@@ -119,6 +150,7 @@ public class CarrinhoBean implements Serializable {
 	public void failure() throws IOException {		
 		FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/pagamento.xhtml");
 	}
+	
 		
 	public List<Bairro> completeText(String query) {
 		
@@ -318,7 +350,7 @@ public class CarrinhoBean implements Serializable {
 	public void realizarPagamento() throws IOException, MPException {
 			
 		// Configura credenciais
-		MercadoPago.SDK.setAccessToken(TEST_ACCESS_TOKEN);	
+		MercadoPago.SDK.setAccessToken(TEST_ACCESS_TOKEN);	 
 
 		// Cria um objeto de preferência
 		preference = new Preference();
@@ -546,6 +578,22 @@ public class CarrinhoBean implements Serializable {
 
 	public Preference getPreference() {
 		return preference;
+	}
+
+	public String getTopic() {
+		return topic;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

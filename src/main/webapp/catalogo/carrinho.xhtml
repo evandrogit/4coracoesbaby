@@ -250,9 +250,9 @@
 	    }
 	    
 	    .continuar-comprando.ui-panel .ui-panel-content {
-		    border: 1px solid #9a9a9a;
+		    border: none;
 		    padding: 4px 4px;
-		    border-radius: 5px;
+		    background: #fbfaf9;
 		}
 		
 		.continuar-comprando:hover {
@@ -733,11 +733,11 @@
 							styleClass="finalizar" disabled="#{carrinhoBean.totalDeItens eq 0}"
 							process="@this meu-carrinho" action="#{carrinhoBean.finalizarPedido}" />
 							
-		<p:panel id="msg1" styleClass="continuar-comprando" style="text-align:center;display:none;"
+		<p:panel id="msg1" styleClass="continuar-comprando" style="text-align:center;"
 			rendered="#{carrinhoBean.totalDeItens ge 1}">
-			<p:link style="color: #bf5306;font-weight: normal;font-size:12px;" href="/home.xhtml"
+			<p:link style="color: #bf5306;font-weight: normal;font-size:12px;border: 1px solid #a0a0a0;padding: 7px;border-radius: 4px;background: #fbfaf9;" href="/home.xhtml"
 								onclick="start_(this);">
-								Clique aqui para adicionar mais itens ao seu pedido.</p:link>
+								Continuar comprando.</p:link>
 		</p:panel>	
 		
 		<p:panel id="msg2" styleClass="continuar-comprando" style="text-align:center;display:none;"

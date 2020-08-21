@@ -7,7 +7,13 @@
 	xmlns:p="http://primefaces.org/ui">
 	
 	<f:metadata>
-		<f:viewAction action="#{carrinhoBean.success}" />
+		<f:viewAction action="#{carrinhoBean.inicializar}" />
+	
+		<f:viewParam name="topic" value="#{carrinhoBean.topic}" />
+		
+		<f:viewParam name="id" value="#{carrinhoBean.id}" />
+		<f:viewAction action="#{carrinhoBean.updateStatus}"
+			if="#{param.topic ne null}" />
 	</f:metadata>
 	
 <h:head>
@@ -19,7 +25,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 	</f:facet>
 	
-	<title>Success</title>
+	<title>Notification</title>
 
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" />
