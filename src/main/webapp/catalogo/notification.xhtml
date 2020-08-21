@@ -5,7 +5,11 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-
+	
+	<f:metadata>
+		<f:viewAction action="#{carrinhoBean.success}" />
+	</f:metadata>
+	
 <h:head>
 	<f:facet name="first">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -15,7 +19,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 	</f:facet>
 	
-	<title>Pagamento</title>
+	<title>Success</title>
 
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" />
@@ -28,30 +32,17 @@
 	
 	<h:outputScript library="webjars"
 		name="bootstrap/3.2.0/js/bootstrap.min.js" />
-	<script src="js/bootstrap.min.js"></script>	
-		 
-
+	
 	<h:outputStylesheet name="css/sweetalert2.min.css"
 		library="manhattan-layout" />
 	
 	<style>
 	@media ( min-width :220px) {
-			.ssl {
-				margin-left: 0px;
-			}
-			.banner {
-				width:100%;
-			}
-			.sobre-preco {
-				width:100%;
-			}
 			#myFooter {
     			background-color: #f2bacc !important;
-    			padding-top: 0px;
     		}
     		#myFooter h5 {
 			    color: #676767;
-			    margin-bottom: 0px;
 			 }
 			 #myFooter a {
 			    color: #545252;
@@ -100,8 +91,9 @@
 				color: #fff;
 				text-decoration:none;
 			}
-		.mercadopago-button {
-			display:none;
+			
+		.grid-card.ui-panelgrid .ui-panelgrid-cell {
+		    padding: 0px;
 		}
 		.pagamento.ui-panelgrid .ui-panelgrid-cell {
 		    padding: 4px 0px;
@@ -160,7 +152,7 @@
 		    font-size: 11px;
 		    padding: 2px 4px;
 		    background-color: #f5719c;
-			color: #ffffff;
+		    color: #fff;
 		    position: relative;
 		    right: 0;
 		    margin-right: 1px;
@@ -185,13 +177,13 @@
 		    z-index: 999999;
 		}
 		#myFooter .footer-copyright p {
-		    font-size: 10px;
+		    font-size: 12px;
 		}
 		.logo {
 			width:225px;
 		}
 		#myFooter .row {
-		   margin-bottom: 0px;
+		    margin-bottom: 25px;
 		}
 		footer {
    			padding: 0px 0;
@@ -598,31 +590,9 @@
 		    .loading-spinner__.active {
 		        display: block;
 		    }
-		    .slogan {
-				color: #676767;
-			    font-weight: normal;
-			    font-size: 11px;	
-			}
 		    	    
 	}
-	
-	@media ( min-width :468px) {
-		.banner {
-			width:auto;
-		}
-	}
-	
 	@media ( min-width :640px) {
-		.ssl {
-			margin-left: -50px;
-		}
-		.slogan {
-			color: #676767;
-		    font-weight: normal;
-		    font-size: 11px;
-		    float: left;
-		    margin-top: 0px;		
-		}
 		.logotipo {
 			margin-left: 14px;
 		   	height: 50px;
@@ -640,7 +610,7 @@
 		    margin-left: 0px;
 		}
 		#myFooter .footer-copyright p {
-		    font-size: 12px;
+		    font-size: 14px;
 		}
 		body .ui-datatable .ui-datatable-data > tr td:nth-child(1) {
 		    padding: 3px;
@@ -701,12 +671,10 @@
 			width:300px;
 		}
 		#myFooter .row {
-		   margin-bottom: 15px;
+		    margin-bottom: 60px;
 		}
 		#myFooter .footer-copyright p {
-		    font-size: 12px;
-		    width: 93%;
-   			margin: auto;
+		    font-size: 14px;
 		}
 		.container {
 		    padding-right: 0px;
@@ -716,12 +684,6 @@
 			display:none;
 		}
 	}
-	@media(min-width :860px) {
-		.sobre-preco {
-			width:60%;
-			margin:auto;
-		}
-	}
 	</style>
 	
 </h:head>
@@ -729,7 +691,7 @@
 <h:body>
 
 
-<h:form id="form">
+<h:form id="form" onsubmit="return false;">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -765,219 +727,34 @@
    	
     <div class="container" id="content" style="margin-bottom:50px;margin-top: -30px;">
     
-    	<p:breadCrumb>
-			<p:menuitem value="Home" onclick="start_(this);" url="home.xhtml" />
-		    <p:menuitem value="Meu pedido" onclick="start_(this);" url="carrinho.xhtml" />
-		    <p:menuitem value="Checkout" onclick="start_(this);" url="checkout.xhtml" />
-		    <p:menuitem value="Pagamento" url="#" />
-		</p:breadCrumb>
-		
-		<p:messages id="msg" closable="true" life="2000" showSummary="false"
-			showDetail="true" style="font-size: 12px;" rendered="false" />
-			
-		<p:panel styleClass="resumo-pedido" style="text-align: center;padding-top: 10px;padding-bottom: 5px;margin-top: 8px;border: 1px solid #b5b5b5;">
-			<p:outputLabel style="color: #6b6b6b;" value="Total a pagar: R$ #{carrinhoBean.totalGeralEmString}" />
-		</p:panel>
-		
-		<p:accordionPanel activeIndex="null" styleClass="resumo-pedido" style="margin-top:9px;">
-			
-			<p:tab title="Resumo do Pedido">
-			   	
-			    <p:dataTable var="produto" value="#{carrinhoBean.listaDeProdutos}" 
-			        paginator="false" style="margin-top:1px;font-size:14px;" id="meu-carrinho"
-			        paginatorAlwaysVisible="false" emptyMessage="Você ainda não adicionou nenhum item ao seu pedido.">
-			        
-			        <p:column width="10%">
-			        	<span class="badge badge-light_">#{produto.quantidadePedido}</span>
-				        <ui:fragment 
-							rendered="#{produto.urlImagem == null}">
-							<p:link styleClass="link-foto" href="javascript:void(0);">
-								<img class="imagem-produto box"
-								src="img/sem-foto01.png" alt="" />
-							</p:link>				
-						</ui:fragment>
-						
-						<ui:fragment
-							rendered="#{produto.urlImagem != null}">
-							<p:link styleClass="link-foto" href="javascript:void(0);">
-								<img class="imagem-produto box"
-									src="#{produto.urlImagem}" />
-							</p:link>
-						</ui:fragment>
-				    </p:column>
-				 
-				    <p:column headerText="Item" width="65%">
-				        <h:outputText value="#{produto.descricao}" />
-				    </p:column>
-				    
-				    <p:column headerText="Total" width="25%">
-				        <h:outputText value="#{produto.precoDeVenda * produto.quantidadePedido}">
-				        	<f:convertNumber type="currency" maxFractionDigits="2" />
-				        </h:outputText>
-				    </p:column>
-				    
-				    <p:columnGroup type="footer"> 	
-			            <p:row>
-			                <p:column colspan="2" style="text-align:right" footerText="Total a pagar:">
-			                	
-			                </p:column>
-			                <p:column colspan="2" styleClass="total-geral" footerText="R$ #{carrinhoBean.totalGeralEmString}" />
-			            </p:row>
-			        </p:columnGroup>
-		      
-			    </p:dataTable>
-			
-			</p:tab>
-			
-		</p:accordionPanel>
-		
-											
-		<p:panelGrid id="panel-grid" columns="2" layout="grid" style="font-size:12px;margin-top:10px;"
-			styleClass="panelgrid-noborder disabled disabled"
-			columnClasses="ui-grid-col-6">
-
-			<p:panel>
-			
-				<p:panelGrid columns="1" layout="grid" style="font-size:12px;"
-					styleClass="panelgrid-noborder disabled disabled pagamento"
-					columnClasses="ui-grid-col-12">
-				
-					<p:outputLabel value="Pagamento" />
-					<p:outputLabel value="Todas as transações são seguras e criptografadas." style="font-size: 11px;font-weight: normal;margin-top: -12px;float: left;" />					
-				</p:panelGrid>
-				
-				
-				
-				
-				<p:panelGrid columns="1" layout="grid" style="font-size:12px;margin-top:12px;"
-					styleClass="panelgrid-noborder disabled disabled"
-					columnClasses="ui-grid-col-12">
-				
-					<p:panel rendered="false">
-						<p:link styleClass="voltar" style="margin-top:10px;" onclick="start_(this);" href="checkout.xhtml">Voltar ao checkout</p:link>	 
-					</p:panel>				
-					 
-					 <p:panel style="text-align: center;" styleClass="panel-mp">						
-						<img class="ssl" style="margin-top: -10px;" src="img/mercado-pago_.png" />
-					 </p:panel>	
-					 
-					 <p:panel style="text-align: center;" styleClass="panel-mp">						
-						<p:commandButton value="Pagar" action="#{carrinhoBean.pagarComMercadoPago}" onclick="pagar();"
-									disabled="#{carrinhoBean.totalDeItens eq 0}" style="background: #27ae60f5;padding: 4px 4px;font-weight: normal;font-size: 14px;" />
-					 </p:panel>	
-					 
-					 <a href="#{carrinhoBean.preference.initPoint}">Pagar com Mercado Pago</a>			 					 
-			
-				</p:panelGrid>
-			
-			</p:panel>
-			
-			
-			<p:panel styleClass="panel-resumo">
-				
-				<p:outputLabel value="Resumo do Pedido" style="margin-top:5px;" />    	
-			    
-			    <p:dataTable var="produto" value="#{carrinhoBean.listaDeProdutos}" 
-			        paginator="false" style="margin-top:1px;margin-bottom:8px;font-size:14px;" id="meu-carrinho"
-			        paginatorAlwaysVisible="false" emptyMessage="Você ainda não adicionou nenhum item ao seu pedido.">
-			        
-			        <p:column width="10%">
-			        	<span class="badge badge-light_">#{produto.quantidadePedido}</span>
-				        <ui:fragment 
-							rendered="#{produto.urlImagem == null}">
-							<p:link styleClass="link-foto" href="javascript:void(0);">
-								<img class="imagem-produto box"
-								src="img/sem-foto01.png" alt="" />
-							</p:link>				
-						</ui:fragment>
-						
-						<ui:fragment
-							rendered="#{produto.urlImagem != null}">
-							<p:link styleClass="link-foto" href="javascript:void(0);">
-								<img class="imagem-produto box"
-									src="#{produto.urlImagem}" />
-							</p:link>
-						</ui:fragment>
-				    </p:column>
-				 
-				    <p:column headerText="Item" width="70%">
-				        <h:outputText value="#{produto.descricao}" />
-				    </p:column>
-				    
-				    <p:column headerText="Total" width="20%">
-				        <h:outputText value="#{produto.precoDeVenda * produto.quantidadePedido}">
-				        	<f:convertNumber type="currency" maxFractionDigits="2" />
-				        </h:outputText>
-				    </p:column>
-				    
-				    <p:columnGroup type="footer"> 	
-			            <p:row>
-			                <p:column colspan="2" style="text-align:right" footerText="Total a pagar:">
-			                	
-			                </p:column>
-			                <p:column colspan="2" styleClass="total-geral" footerText="R$ #{carrinhoBean.totalGeralEmString}" />
-			            </p:row>
-			        </p:columnGroup>
-		      
-			    </p:dataTable>
-
-			</p:panel>
-			
-		</p:panelGrid>
+    	
 						
     </div>
-    
+    	
+</h:form> 
 
-  <script
-	   src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
-	   data-preference-id="#{carrinhoBean.preference.id}">
-	 </script>
-		
-</h:form> 		
 
-	<div style="text-align:center;margin-bottom:5px;">
-		<img src="https://imgmp.mlstatic.com/org-img/MLB/MP/BANNERS/PSJ/468x60_banner_psj_3x.jpg" 
-			alt="Mercado Pago - Meios de pagamento" title="Mercado Pago - Meios de pagamento" 
-			width="468" height="60"/>
-		<br/>
-		<a href="https://www.mercadopago.com.br/ajuda/Custos-de-parcelamento_322" style="text-decoration: none;font-size: 11px;">Veja os juros de parcelamento.</a>
-		<div class="sobre-preco">
-			<span style="font-size: 10px;color: #000;font-weight: normal;">Preços, promoções e condições de pagamento são válidos apenas para compras pela internet, 
-	                		não refletindo necessariamente as mesmas condições utilizadas nas lojas físicas. 
-	                		Em caso de divergência de preços, será válido o do Carrinho de Compras. 
-	                		Venda sujeita à disponibilidade de estoque. 
-	                		As imagens dos produtos são meramente ilustrativas.
-	                	</span>
-       </div>
-	</div>
-        
 	<footer id="myFooter">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
-                	<h5>4 CORACOES BABY</h5>
-                	<span class="slogan">Roupas e acessórios para seu bebê.</span>              	
+                <div class="col-sm-5">
                 </div>
                 <div class="col-sm-2">
-                    <img class="ssl" style="margin-top: 18px;" src="img/ssl.png" />
-                </div>
-                <div class="col-sm-2">
-                    <h5>Links</h5>
+                    <h5>Inicio</h5>
                     <ul>
-                        <li><a onclick="start_(this);" href="home.xhtml">Home</a></li>
-                        <li><a href="docs/politica-privacidade.pdf">Política de Privacidade</a></li>
+                        <li><a href="home.xhtml">Home</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
                     <h5>Contato</h5>
                     <ul>
-                        <li><a href="javascript:void(0);">+55 92 98458-2975</a></li>
+                        <li><a href="javascript:void(0);">+55 92 98460-1310</a></li>
                         <li><a href="javascript:void(0);">4coracoesbaby@gmail.com</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <div class="social-networks">
-                        <a href="javascript:void(0);" class="whatsapp"><i class="fa fa-whatsapp"></i></a>
+                        <a href="javascript:void(0);" class="twitter"><i class="fa fa-twitter"></i></a>
                         <a href="javascript:void(0);" class="facebook"><i class="fa fa-facebook"></i></a>
                         <a href="javascript:void(0);" class="instagram"><i class="fa fa-instagram"></i></a>
                     </div>
@@ -987,10 +764,9 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright"> 
-            <p>4 CORACOES BABY | CNPJ 38.087.957/0001-90 | End.: Travessa Francisco Duarte N°67 CEP: 69078-090 Bairro Japiim - Manaus / AM |
-            	SAC: faleconosco@4coracoesbaby.com | (92) 98460-1310 envio de mensagens via WhatsApp | 
-            	4 CORACOES BABY © 2020 Todos os direitos reservados.</p>
+        <div class="footer-copyright">
+            <p>Copyright © 4 Corações Baby. Todos os direitos
+					reservados.</p>
         </div>
     </footer>
 	
@@ -1025,7 +801,6 @@
 	</div>
 
 
-<h:form id="form-script">
 	<script type="text/javascript">
 		var delay = (function() {
 		    var timer = 0;
@@ -1052,20 +827,20 @@
 				}, 1500);
 		}	
 		
+		function pagamento() {
+			event.preventDefault();
+			jQuery(".loading-spinner__").fadeIn("slow");
+			
+			delay(function() {     
+					$(location).attr('href','pagamento.xhtml');
+				}, 2000);
+		}
+		
 		function start() {
 			jQuery(".loading-spinner").fadeIn("slow");
 		}
 		
 		function start__() {
-			event.preventDefault();
-			jQuery(".loading-spinner__").fadeIn("slow");
-			
-			delay(function() {     
-				doPay_();
-			}, 1500);
-		}
-		
-		function pagar() {
 			jQuery(".loading-spinner__").fadeIn("slow");
 		}
 
@@ -1086,12 +861,12 @@
 			}	
 		
 	 </script>
-	 
-	 <h:outputScript target="body" library="same" name="javascripts/app.js" />
-	 
-	 <script src="https://www.mercadopago.com/v2/security.js" view="home"></script>
-	 
-</h:form>
 
+	<h:outputScript target="body" library="same" name="javascripts/app.js" />
+	
+	
 </h:body>
+
+
+						
 </html>
