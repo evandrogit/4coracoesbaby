@@ -271,6 +271,10 @@ public class CarrinhoBean implements Serializable {
 			totalGeral += item.getUnitPrice().doubleValue() * item.getQuantity().intValue();
 		}
 		
+		System.out.println(this.totalDeItens.intValue() + " - " + totalDeItens.intValue());
+		
+		System.out.println(this.totalGeral.doubleValue() + " - " + totalGeral.doubleValue());
+		
 		
 		if(this.totalDeItens.intValue() == totalDeItens.intValue() && this.totalGeral.doubleValue() == totalGeral.doubleValue()) {
 			sendMailAndSavePedido();
