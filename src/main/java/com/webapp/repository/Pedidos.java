@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import com.webapp.model.Pedido;
 import com.webapp.util.jpa.Transacional;
@@ -35,6 +36,16 @@ public class Pedidos implements Serializable {
 	
 	public List<Pedido> todos() {
 		return this.manager.createQuery("from Pedido order by nome", Pedido.class).getResultList();
+	}
+	
+	public Pedido porPreferenceId(String porPreferenceId) {
+		
+		try {
+			return this.manager.createQuery("from Pedido p where p.preferenceId = :preferenceId", Pedido.class).getSingleResult();		
+		} catch(NoResultException e) {			
+		}
+		
+		return null;
 	}
 	
 }

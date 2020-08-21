@@ -25,23 +25,18 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.Preference;
-import com.mercadopago.resources.Preference.AutoReturn;
 import com.mercadopago.resources.datastructures.merchantorder.MerchantOrderPayment;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
 import com.mercadopago.resources.datastructures.preference.PaymentMethods;
-import com.webapp.mail.configuration.AppConfig;
 import com.webapp.mail.model.CustomerInfo;
 import com.webapp.mail.model.ProductOrder;
-import com.webapp.mail.service.OrderService;
 import com.webapp.model.Bairro;
 import com.webapp.model.ItemPedido;
 import com.webapp.model.Pedido;
@@ -136,21 +131,31 @@ public class CarrinhoBean implements Serializable {
 	            paid_amount += payment.getTransactionAmount();
 	        }
 	    }
+	    
+	    String observacao = "";
 
 	    // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
 	    if(paid_amount >= merchantOrder.getTotalAmount()){
 	        if (merchantOrder.getShipments().size() > 0) { // The merchant_order has shipments
 	            if(merchantOrder.getShipments().get(0).getStatus().equals("ready_to_ship")) {
-	            	System.out.println("Totally paid. Print the label and release your item.");
+	            	observacao = "Totally paid. Print the label and release your item.";
 	            }
 	        } else { // The merchant_order don't has any shipments
-	        	System.out.println("Totally paid. Release your item.");
+	        	observacao = "Totally paid. Release your item.";
 	        }
 	    } else {
-	        System.out.println("Not paid yet. Do not release your item.");
+	    	observacao = "Not paid yet. Do not release your item.";
 	    }
-
-		
+	    
+	    
+	    Pedido pedido = pedidos.porPreferenceId(merchantOrder.getPreferenceId());
+	    if(pedido != null) {
+	    	pedido.setMerchantOrderId(merchantOrder.getId());
+	    	pedido.setStatus(merchantOrder.getStatus());
+	    	pedido.setObservacao(observacao);
+		    pedidos.save(pedido);
+	    }
+	 
 	}	
 	
 	
@@ -173,6 +178,7 @@ public class CarrinhoBean implements Serializable {
 	public void failure() throws IOException {		
 		FacesContext.getCurrentInstance().getExternalContext().redirect("/catalogo/pagamento.xhtml");
 	}
+	
 	
 		
 	public List<Bairro> completeText(String query) {
@@ -267,7 +273,7 @@ public class CarrinhoBean implements Serializable {
 		
 		
 		if(this.totalDeItens.intValue() == totalDeItens.intValue() && this.totalGeral.doubleValue() == totalGeral.doubleValue()) {
-			//sendMailAndSavePedido();
+			sendMailAndSavePedido();
 			PrimeFaces.current().executeScript("start__();"); 
 			
 		} else {
@@ -277,6 +283,8 @@ public class CarrinhoBean implements Serializable {
 
 			// Cria um objeto de preferência
 			preference = new Preference();
+			
+			pedido = new Pedido();
 
 			// Cria um itens na preferência
 			for (Produto produto : listaDeProdutos) {
@@ -300,7 +308,21 @@ public class CarrinhoBean implements Serializable {
 	
 	
 	private void sendMailAndSavePedido() {
-					
+		
+		if(pedido.getId() != null) {
+			List<ItemPedido> itensPedido = itensPedidos.porPedido(pedido);
+			for (ItemPedido itemPedido : itensPedido) {
+				itensPedidos.remove(itemPedido);
+			}
+		}
+		
+		
+		if(!pedido.getPreferenceId().equals(preference.getId())) {
+			pedido.setStatus("AGUARDANDO");
+			pedido.setPreferenceId(preference.getId());
+		}
+			
+		
 		pedido.setDataPedido(new Date());
 		pedido.setQuantidadeItens(totalDeItens);
 		pedido.setValorTotal(new BigDecimal(totalGeral));
@@ -308,12 +330,8 @@ public class CarrinhoBean implements Serializable {
 		pedido.setEmail(pedido.getEmail().toLowerCase().trim());
 		pedido.setNome(convertToTitleCaseIteratingChars(pedido.getNome().trim()));
 		
-		pedido.setLucro(new BigDecimal(0));
-		pedido.setPercentualLucro(new BigDecimal(0));
-		
-		pedido.setEmpresa("Decore");
-		pedido.setStatus("AGUARDANDO");		
-		
+		pedido.setEmpresa("EMPRESA");
+			
 		Calendar calendario = Calendar.getInstance();
 		calendario.setTime(pedido.getDataPedido());
 		
@@ -338,7 +356,7 @@ public class CarrinhoBean implements Serializable {
 		
 		
 		
-		
+		/*
 		AbstractApplicationContext context = new AnnotationConfigApplicationContext(
 				AppConfig.class);
 
@@ -346,26 +364,25 @@ public class CarrinhoBean implements Serializable {
 		
 		boolean emailEnviado = orderService.sendOrderConfirmation(getDummyOrder());
 		
-		((AbstractApplicationContext) context).close();
+		((AbstractApplicationContext) context).close();	
+		*/
 		
 		
 		
-		
-		
-		pedido.setEmailenviado(emailEnviado);
+		pedido.setEmailenviado(false);
 		pedidos.save(pedido);
 		
 		
 		
 		
 		
-		pedido = new Pedido();
+		//pedido = new Pedido();
 		
-		listaDeProdutos = new ArrayList<Produto>();
+		//listaDeProdutos = new ArrayList<Produto>();
 		
-		atualizarCarrinho();
+		//atualizarCarrinho();
 		
-		PrimeFaces.current().executeScript("pedidoEnviado();");
+		//PrimeFaces.current().executeScript("pedidoEnviado();");
 		
 	}
 	
@@ -377,6 +394,8 @@ public class CarrinhoBean implements Serializable {
 
 		// Cria um objeto de preferência
 		preference = new Preference();
+		
+		pedido = new Pedido();
 
 		// Cria um itens na preferência
 		for (Produto produto : listaDeProdutos) {

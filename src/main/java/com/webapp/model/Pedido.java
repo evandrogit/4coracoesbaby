@@ -31,6 +31,12 @@ public class Pedido implements Serializable {
 	@Column(nullable = false)
 	private Date dataPedido = new Date();
 	
+	@Column(nullable = false)
+	private String preferenceId;
+	
+	@Column(nullable = true)
+	private String merchantOrderId;
+	
 	@NotNull
 	@Column(nullable = false)
 	private Long quantidadeItens = 0L;
@@ -39,16 +45,6 @@ public class Pedido implements Serializable {
 	@Column(nullable = false)
 	@Digits(integer = 10 /* precision */, fraction = 4 /* scale */)
 	private BigDecimal valorTotal = BigDecimal.ZERO;
-	
-	@NotNull
-	@Column(nullable = false)
-	@Digits(integer = 10 /* precision */, fraction = 4 /* scale */)
-	private BigDecimal lucro = BigDecimal.ZERO;
-
-	@NotNull
-	@Column(nullable = false)
-	@Digits(integer = 10 /* precision */, fraction = 2 /* scale */)
-	private BigDecimal percentualLucro = BigDecimal.ZERO;
 	
 	@Column(nullable = false, length = 20)
 	private String cupom;
@@ -67,6 +63,9 @@ public class Pedido implements Serializable {
 	@Type(type = "yes_no")
 	@Column(nullable = false)
 	private boolean emailenviado;
+	
+	@Column(nullable = true)
+	private String observacao;
 
 	/* Informações de contato */
 	@Email
@@ -136,6 +135,22 @@ public class Pedido implements Serializable {
 		this.dataPedido = dataPedido;
 	}
 
+	public String getPreferenceId() {
+		return preferenceId;
+	}
+
+	public void setPreferenceId(String preferenceId) {
+		this.preferenceId = preferenceId;
+	}
+
+	public String getMerchantOrderId() {
+		return merchantOrderId;
+	}
+
+	public void setMerchantOrderId(String merchantOrderId) {
+		this.merchantOrderId = merchantOrderId;
+	}
+
 	public Long getQuantidadeItens() {
 		return quantidadeItens;
 	}
@@ -150,22 +165,6 @@ public class Pedido implements Serializable {
 
 	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal.setScale(4, BigDecimal.ROUND_HALF_EVEN);
-	}
-
-	public BigDecimal getLucro() {
-		return lucro;
-	}
-
-	public void setLucro(BigDecimal lucro) {
-		this.lucro = lucro.setScale(4, BigDecimal.ROUND_HALF_EVEN);
-	}
-
-	public BigDecimal getPercentualLucro() {
-		return percentualLucro;
-	}
-
-	public void setPercentualLucro(BigDecimal percentualLucro) {
-		this.percentualLucro = percentualLucro.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 	}
 
 	public String getCupom() {
@@ -206,6 +205,14 @@ public class Pedido implements Serializable {
 
 	public void setEmailenviado(boolean emailenviado) {
 		this.emailenviado = emailenviado;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 	public String getEmail() {
