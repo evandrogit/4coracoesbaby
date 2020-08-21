@@ -341,7 +341,7 @@ public class CarrinhoBean implements Serializable {
 		preference.setBackUrls(backUrls);
 		
 		
-		preference.setAutoReturn(AutoReturn.approved);
+		//preference.setAutoReturn(AutoReturn.approved);
 		
 
 		PaymentMethods paymentMethods = new PaymentMethods();
