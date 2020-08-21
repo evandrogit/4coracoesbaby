@@ -97,7 +97,6 @@ public class CarrinhoBean implements Serializable {
 	public void inicializar() {
 		if (FacesUtil.isNotPostback()) {	
 			
-			System.out.println("Teste");
 		}
 	}
 	
@@ -333,14 +332,15 @@ public class CarrinhoBean implements Serializable {
 			preference.appendItem(item);			
 		}
 		
-		
+		/*
 		BackUrls backUrls = new BackUrls(
                 "https://quatrocoracoesbaby.herokuapp.com/catalogo/success.xhtml",
-                "http://quatrocoracoesbaby.herokuapp.com/catalogo/pending.xhtml",
-                "http://quatrocoracoesbaby.herokuapp.com/catalogo/failure.xhtml");
+                "https://quatrocoracoesbaby.herokuapp.com/catalogo/pending.xhtml",
+                "https://quatrocoracoesbaby.herokuapp.com/catalogo/failure.xhtml");
 
 		preference.setBackUrls(backUrls);
-		preference.setAutoReturn(AutoReturn.approved);
+		*/
+		//preference.setAutoReturn(AutoReturn.approved);
 		
 
 		PaymentMethods paymentMethods = new PaymentMethods();
